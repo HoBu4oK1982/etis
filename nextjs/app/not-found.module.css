@@ -1,0 +1,256 @@
+/* =========================================================
+   404 — Инженерная авария в магистрали
+   ========================================================= */
+
+.root {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: #050a17;
+  color: #e2e8f0;
+  font-family: var(--font-sans, "Inter", system-ui, sans-serif);
+  user-select: none;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  display: block;
+}
+
+/* Виньетка сверху/снизу — уводит внимание в центр */
+.root::before,
+.root::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 160px;
+  z-index: 1;
+  pointer-events: none;
+}
+.root::before {
+  top: 0;
+  background: linear-gradient(180deg, rgba(2, 4, 12, 0.9), rgba(2, 4, 12, 0));
+}
+.root::after {
+  bottom: 0;
+  background: linear-gradient(0deg, rgba(2, 4, 12, 0.9), rgba(2, 4, 12, 0));
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 20px 100px;
+  text-align: center;
+}
+
+/* ---------- Верхняя аварийная плашка ---------- */
+.code {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 18px;
+  border: 1px solid rgba(239, 68, 68, 0.42);
+  border-radius: 999px;
+  background: rgba(239, 68, 68, 0.09);
+  color: #fca5a5;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  will-change: transform, opacity;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 12px #ef4444, 0 0 24px rgba(239, 68, 68, 0.6);
+  animation: pulseDot 1.6s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.35; transform: scale(1.5); }
+}
+
+/* ---------- Цифры 404 ---------- */
+.digits {
+  position: relative;
+  margin: 34px 0 22px;
+  font-size: clamp(120px, 22vw, 320px);
+  font-weight: 900;
+  line-height: 0.88;
+  letter-spacing: -0.055em;
+  background: linear-gradient(180deg, #ffffff 0%, #cfe4ff 45%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 22px 55px rgba(59, 130, 246, 0.45));
+  will-change: transform, filter;
+}
+
+/* Двойники для glitch — берут содержимое из data-text */
+.digits::before,
+.digits::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: 0;
+  pointer-events: none;
+}
+.digits::before {
+  color: #ff5a5a;
+  transform: translate(-4px, 0);
+  mix-blend-mode: screen;
+}
+.digits::after {
+  color: #5aa8ff;
+  transform: translate(4px, 0);
+  mix-blend-mode: screen;
+}
+.digitsGlitch::before,
+.digitsGlitch::after {
+  opacity: 0.85;
+}
+
+/* ---------- Подпись ---------- */
+.sub {
+  max-width: 520px;
+  margin: 0 0 36px;
+  color: #94a3b8;
+  font-size: clamp(14px, 1.4vw, 17px);
+  line-height: 1.65;
+  will-change: transform, opacity;
+}
+
+.sub b {
+  color: #cbd5e1;
+  font-weight: 700;
+}
+
+/* ---------- Кнопка ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 30px;
+  color: #fff;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  box-shadow:
+    0 14px 36px rgba(37, 99, 235, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  will-change: transform, opacity;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 18px 46px rgba(37, 99, 235, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+.btn svg { flex: 0 0 auto; }
+
+/* ---------- Быстрые ссылки ---------- */
+.quick {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 32px;
+  will-change: opacity, transform;
+}
+.quickLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  color: #cbd5e1;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+.quickLink:hover {
+  color: #fff;
+  border-color: rgba(148, 163, 184, 0.5);
+  background: rgba(30, 41, 59, 0.7);
+  transform: translateY(-1px);
+}
+.quickHot::before,
+.quickCold::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.quickHot::before  { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+.quickCold::before { background: #3b82f6; box-shadow: 0 0 8px #3b82f6; }
+
+/* ---------- Легенда внизу ---------- */
+.legend {
+  position: absolute;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 34px;
+  color: #64748b;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  z-index: 3;
+}
+.legendItem { display: flex; align-items: center; gap: 8px; }
+.legendDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+.legendDotHot  { background: #ef4444; box-shadow: 0 0 10px #ef4444; }
+.legendDotCold { background: #3b82f6; box-shadow: 0 0 10px #3b82f6; }
+
+/* ---------- Мобилка ---------- */
+@media (max-width: 640px) {
+  .content { padding: 20px 16px 90px; }
+  .code { font-size: 10px; padding: 8px 14px; letter-spacing: 0.14em; }
+  .digits { margin: 24px 0 18px; }
+  .sub { margin-bottom: 28px; }
+  .btn { padding: 14px 24px; font-size: 14px; }
+  .quick { margin-top: 24px; }
+  .quickLink { font-size: 12px; padding: 8px 13px; }
+  .legend { gap: 18px; bottom: 18px; font-size: 10px; }
+}
+
+/* ---------- Уважаем prefers-reduced-motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .dot { animation: none; }
+  .btn { transition: none; }
+}

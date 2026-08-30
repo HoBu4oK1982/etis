@@ -1,0 +1,607 @@
+/* ============================================================
+   О КОМПАНИИ + КОНТАКТЫ
+   Единый визуальный язык со страницей /delivery.
+   Префиксы: .etis-company-* и .etis-contacts-*
+   ============================================================ */
+
+.etis-company-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 330px;
+  padding: 38px 40px;
+  border: 1px solid #e2e8f0;
+  border-radius: 22px;
+  background:
+    radial-gradient(120% 160% at 100% 0%, rgba(37, 99, 235, .12), transparent 61%),
+    linear-gradient(180deg, #fff 0%, #f8fbff 100%);
+}
+.etis-company-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(14, 65, 125, .045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14, 65, 125, .045) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: linear-gradient(115deg, #000 0%, transparent 70%);
+  -webkit-mask-image: linear-gradient(115deg, #000 0%, transparent 70%);
+}
+.etis-company-hero__copy {
+  position: relative;
+  z-index: 3;
+  max-width: 720px;
+}
+.etis-company-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #0866cc;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.etis-company-eyebrow > span {
+  width: 26px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #2563eb, rgba(37, 99, 235, .15));
+}
+.etis-company-hero h1 {
+  max-width: 660px;
+  margin: 14px 0 0;
+  color: #07183b;
+  font-size: clamp(30px, 3.35vw, 48px);
+  font-weight: 850;
+  line-height: 1.05;
+  letter-spacing: -.048em;
+}
+.etis-company-hero__copy > p {
+  max-width: 690px;
+  margin: 17px 0 0;
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.68;
+}
+.etis-company-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 23px;
+}
+.etis-company-chips > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 13px;
+  color: #475569;
+  border: 1px solid #dbe7f6;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .87);
+  font-size: 12.3px;
+  font-weight: 650;
+}
+.etis-company-chips svg { color: #2563eb; }
+
+/* ---------- About hero visual ---------- */
+.etis-company-hero--about .etis-company-hero__copy { max-width: 59%; }
+.etis-company-hero__visual {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  width: 42%;
+  height: 100%;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 62% 48%, rgba(55, 127, 235, .24), transparent 30%),
+    linear-gradient(135deg, rgba(230, 240, 255, .4), rgba(215, 231, 252, .9));
+  clip-path: polygon(20% 0, 100% 0, 100% 100%, 0 100%);
+}
+.etis-company-hero__visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(248, 251, 255, .94), transparent 36%);
+}
+.etis-company-visual__orbit {
+  position: absolute;
+  z-index: 1;
+  left: 55%;
+  top: 50%;
+  border: 1px solid rgba(37, 99, 235, .22);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.etis-company-visual__orbit--one { width: 270px; height: 270px; }
+.etis-company-visual__orbit--two { width: 385px; height: 385px; border-style: dashed; }
+.etis-company-visual__core {
+  position: absolute;
+  z-index: 3;
+  left: 56%;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 112px;
+  height: 112px;
+  color: #fff;
+  border: 8px solid rgba(255, 255, 255, .68);
+  border-radius: 30px;
+  background: linear-gradient(145deg, #0b64d1, #063f89);
+  box-shadow: 0 28px 55px rgba(6, 63, 137, .28);
+  transform: translate(-50%, -50%) rotate(-7deg);
+}
+.etis-company-visual__metric {
+  position: absolute;
+  z-index: 4;
+  min-width: 115px;
+  padding: 13px 16px;
+  border: 1px solid rgba(255, 255, 255, .88);
+  border-radius: 15px;
+  background: rgba(255, 255, 255, .85);
+  box-shadow: 0 16px 35px rgba(17, 65, 124, .13);
+  backdrop-filter: blur(10px);
+}
+.etis-company-visual__metric b { display: block; color: #0b52c0; font-size: 22px; line-height: 1; }
+.etis-company-visual__metric span { display: block; margin-top: 5px; color: #64748b; font-size: 11px; font-weight: 700; }
+.etis-company-visual__metric--top { top: 49px; right: 34px; }
+.etis-company-visual__metric--bottom { right: 88px; bottom: 38px; }
+
+/* ---------- Shared sections ---------- */
+.etis-company-section { margin-top: 48px; }
+.etis-company-section__head { margin-bottom: 21px; }
+.etis-company-section__head > span {
+  display: block;
+  margin-bottom: 7px;
+  color: #0866cc;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.etis-company-section__head h2,
+.etis-company-story h2,
+.etis-contacts-location h2 {
+  margin: 0;
+  color: #07183b;
+  font-size: clamp(23px, 2.5vw, 32px);
+  font-weight: 850;
+  line-height: 1.15;
+  letter-spacing: -.038em;
+}
+.etis-company-section__head p {
+  max-width: 700px;
+  margin: 10px 0 0;
+  color: #64748b;
+  font-size: 14.5px;
+  line-height: 1.62;
+}
+.etis-company-grid { display: grid; gap: 16px; }
+.etis-company-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.etis-company-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 238px;
+  padding: 22px;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  background: #fff;
+  transition: transform 240ms ease, border-color 240ms ease, box-shadow 240ms ease;
+}
+.etis-company-card::after {
+  content: "";
+  position: absolute;
+  top: -90px;
+  right: -90px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(37, 99, 235, .1), transparent 68%);
+  transition: transform 320ms ease;
+}
+.etis-company-card:hover {
+  transform: translateY(-5px);
+  border-color: #bad3ef;
+  box-shadow: 0 22px 46px rgba(14, 65, 125, .12);
+}
+.etis-company-card:hover::after { transform: scale(1.2); }
+.etis-company-card__icon {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  color: #0b52c0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #eaf3ff, #dbe9fd);
+}
+.etis-company-card h3 {
+  position: relative;
+  z-index: 1;
+  margin: 17px 0 0;
+  color: #07183b;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.28;
+  letter-spacing: -.02em;
+}
+.etis-company-card p {
+  position: relative;
+  z-index: 1;
+  margin: 10px 0 0;
+  color: #64748b;
+  font-size: 13.5px;
+  line-height: 1.58;
+}
+.etis-company-card--compact { min-height: 220px; }
+
+/* ---------- Story ---------- */
+.etis-company-story {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(360px, .9fr);
+  gap: 26px;
+  margin-top: 48px;
+  padding: 32px;
+  border: 1px solid #e2e8f0;
+  border-radius: 22px;
+  background: linear-gradient(145deg, #fff, #f7faff);
+}
+.etis-company-story__copy > p {
+  margin: 15px 0 0;
+  color: #64748b;
+  font-size: 14.5px;
+  line-height: 1.68;
+}
+.etis-company-story__copy ul { margin: 20px 0 0; padding: 0; list-style: none; }
+.etis-company-story__copy li {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin-top: 10px;
+  color: #475569;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.etis-company-story__copy li svg { flex: 0 0 auto; margin-top: 1px; color: #2563eb; }
+.etis-company-story__panel {
+  align-self: stretch;
+  padding: 24px;
+  color: #fff;
+  border-radius: 19px;
+  background:
+    radial-gradient(circle at 100% 0, rgba(120, 191, 255, .3), transparent 38%),
+    linear-gradient(145deg, #063f89, #075fca);
+  box-shadow: 0 22px 46px rgba(6, 63, 137, .18);
+}
+.etis-company-story__panel-head { display: flex; align-items: center; gap: 13px; }
+.etis-company-story__panel-head > span {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, .15);
+}
+.etis-company-story__panel-head b { display: block; font-size: 20px; }
+.etis-company-story__panel-head small { display: block; margin-top: 3px; color: rgba(255, 255, 255, .72); font-size: 11.5px; }
+.etis-company-story__numbers {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 24px;
+}
+.etis-company-story__numbers > div {
+  min-height: 104px;
+  padding: 15px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .08);
+}
+.etis-company-story__numbers b { display: block; font-size: 25px; line-height: 1; }
+.etis-company-story__numbers span { display: block; margin-top: 8px; color: rgba(255, 255, 255, .74); font-size: 11.5px; line-height: 1.35; }
+
+/* ---------- Process ---------- */
+.etis-company-process {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: company-step;
+}
+.etis-company-process li {
+  position: relative;
+  min-height: 220px;
+  padding: 22px;
+  border: 1px solid #e2e8f0;
+  border-radius: 19px;
+  background: #fff;
+}
+.etis-company-process__number {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  color: #dbe9fd;
+  font-size: 24px;
+  font-weight: 850;
+}
+.etis-company-process__icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: #fff;
+  border-radius: 13px;
+  background: linear-gradient(145deg, #2563eb, #0b52c0);
+  box-shadow: 0 12px 22px rgba(5, 91, 199, .2);
+}
+.etis-company-process h3 { margin: 17px 0 0; color: #07183b; font-size: 15.5px; font-weight: 800; }
+.etis-company-process p { margin: 9px 0 0; color: #64748b; font-size: 13px; line-height: 1.58; }
+
+/* ---------- CTA ---------- */
+.etis-company-cta {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  margin-top: 48px;
+  padding: 30px 32px;
+  color: #fff;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #063f89 0%, #0758bd 64%, #0a6ad9 100%);
+}
+.etis-company-cta::after {
+  content: "";
+  position: absolute;
+  right: -60px;
+  top: -120px;
+  width: 320px;
+  height: 320px;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 50%;
+  box-shadow: 0 0 0 34px rgba(255, 255, 255, .04), 0 0 0 68px rgba(255, 255, 255, .025);
+}
+.etis-company-cta > * { position: relative; z-index: 1; }
+.etis-company-cta > div > span { display: block; margin-bottom: 6px; color: #bfdbfe; font-size: 11px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
+.etis-company-cta h2 { margin: 0; font-size: clamp(20px, 2.1vw, 27px); font-weight: 850; line-height: 1.18; letter-spacing: -.032em; }
+.etis-company-cta p { max-width: 640px; margin: 9px 0 0; color: rgba(255, 255, 255, .83); font-size: 13.5px; line-height: 1.55; }
+.etis-company-cta__actions { display: flex; flex: 0 0 auto; flex-wrap: wrap; gap: 10px; }
+.etis-company-cta__primary,
+.etis-company-cta__secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 19px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-weight: 750;
+  transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
+}
+.etis-company-cta__primary { color: #07183b; background: #fff; box-shadow: 0 12px 26px rgba(3, 30, 70, .22); }
+.etis-company-cta__secondary { color: #fff; border: 1px solid rgba(255, 255, 255, .45); background: rgba(255, 255, 255, .09); }
+.etis-company-cta__primary:hover,
+.etis-company-cta__secondary:hover { transform: translateY(-2px); }
+.etis-company-cta__secondary:hover { background: rgba(255, 255, 255, .17); }
+
+/* ============================================================
+   CONTACTS
+   ============================================================ */
+.etis-company-hero--contacts .etis-company-hero__copy { max-width: 58%; }
+.etis-contacts-hero__visual {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  width: 43%;
+  height: 100%;
+  overflow: hidden;
+  clip-path: polygon(20% 0, 100% 0, 100% 100%, 0 100%);
+  background: linear-gradient(145deg, #e8f2ff, #ccdef7);
+}
+.etis-contacts-hero__visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(135deg, rgba(248, 251, 255, .95), transparent 37%);
+}
+.etis-contacts-hero__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(23, 79, 151, .1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 79, 151, .1) 1px, transparent 1px);
+  background-size: 34px 34px;
+  transform: rotate(-8deg) scale(1.2);
+}
+.etis-contacts-hero__pin {
+  position: absolute;
+  z-index: 4;
+  left: 58%;
+  top: 46%;
+  display: grid;
+  place-items: center;
+  width: 82px;
+  height: 82px;
+  color: #fff;
+  border: 8px solid rgba(255, 255, 255, .72);
+  border-radius: 24px 24px 24px 8px;
+  background: linear-gradient(145deg, #176fd8, #063f89);
+  box-shadow: 0 24px 48px rgba(6, 63, 137, .27);
+  transform: translate(-50%, -50%) rotate(-7deg);
+}
+.etis-contacts-hero__route {
+  position: absolute;
+  z-index: 3;
+  height: 3px;
+  border-radius: 99px;
+  background: rgba(37, 99, 235, .36);
+  transform-origin: left center;
+}
+.etis-contacts-hero__route--one { left: 24%; top: 65%; width: 210px; transform: rotate(-23deg); }
+.etis-contacts-hero__route--two { left: 50%; top: 31%; width: 180px; transform: rotate(18deg); }
+.etis-contacts-hero__label {
+  position: absolute;
+  z-index: 4;
+  right: 28px;
+  bottom: 28px;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, .85);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, .82);
+  box-shadow: 0 15px 34px rgba(17, 65, 124, .12);
+  backdrop-filter: blur(10px);
+}
+.etis-contacts-hero__label b { display: block; color: #0b52c0; font-size: 17px; }
+.etis-contacts-hero__label span { display: block; margin-top: 2px; color: #64748b; font-size: 10.5px; font-weight: 700; }
+
+.etis-contacts-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 15px; }
+.etis-contact-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 225px;
+  padding: 21px;
+  color: inherit;
+  border: 1px solid #e2e8f0;
+  border-radius: 19px;
+  background: #fff;
+  transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+}
+.etis-contact-card:hover { transform: translateY(-5px); border-color: #bad3ef; box-shadow: 0 20px 42px rgba(14, 65, 125, .12); }
+.etis-contact-card__icon { display: grid; place-items: center; width: 46px; height: 46px; color: #0b52c0; border-radius: 14px; background: linear-gradient(135deg, #eaf3ff, #dbe9fd); }
+.etis-contact-card__eyebrow { display: block; margin-top: 16px; color: #64748b; font-size: 10.5px; font-weight: 800; letter-spacing: .075em; text-transform: uppercase; }
+.etis-contact-card strong { display: block; margin-top: 7px; color: #07183b; font-size: 16px; font-weight: 850; line-height: 1.3; }
+.etis-contact-card small { display: block; margin-top: 9px; color: #64748b; font-size: 12.5px; line-height: 1.5; }
+.etis-contact-card__arrow { position: absolute; right: 18px; bottom: 15px; color: #2563eb; font-size: 20px; transition: transform 180ms ease; }
+.etis-contact-card:hover .etis-contact-card__arrow { transform: translateX(4px); }
+
+.etis-contacts-location {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(380px, .9fr);
+  gap: 24px;
+  margin-top: 48px;
+  padding: 30px;
+  border: 1px solid #e2e8f0;
+  border-radius: 22px;
+  background: linear-gradient(145deg, #fff, #f8fbff);
+}
+.etis-contacts-location__copy > p { margin: 14px 0 0; color: #64748b; font-size: 14px; line-height: 1.65; }
+.etis-contacts-location__facts { display: grid; gap: 10px; margin-top: 19px; }
+.etis-contacts-location__facts > div { display: flex; align-items: flex-start; gap: 11px; padding: 12px 14px; border: 1px solid #e5edf7; border-radius: 13px; background: rgba(255, 255, 255, .8); }
+.etis-contacts-location__facts svg { flex: 0 0 auto; margin-top: 1px; color: #2563eb; }
+.etis-contacts-location__facts b { display: block; color: #07183b; font-size: 13px; }
+.etis-contacts-location__facts small { display: block; margin-top: 3px; color: #64748b; font-size: 11.5px; line-height: 1.4; }
+.etis-contacts-location__button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-top: 18px; padding: 0 17px; color: #fff; border-radius: 11px; background: linear-gradient(135deg, #2563eb, #0b52c0); box-shadow: 0 12px 24px rgba(5, 91, 199, .2); font-size: 13px; font-weight: 750; transition: transform 180ms ease, box-shadow 180ms ease; }
+.etis-contacts-location__button:hover { transform: translateY(-2px); box-shadow: 0 16px 30px rgba(5, 91, 199, .25); }
+
+.etis-contacts-map { position: relative; overflow: hidden; min-height: 390px; border: 1px solid #d8e5f4; border-radius: 18px; background: linear-gradient(145deg, #e9f3ff, #dceafa); }
+.etis-contacts-map__roads { position: absolute; inset: 0; background-image: linear-gradient(rgba(26, 85, 158, .09) 1px, transparent 1px), linear-gradient(90deg, rgba(26, 85, 158, .09) 1px, transparent 1px); background-size: 38px 38px; transform: rotate(-9deg) scale(1.2); }
+.etis-contacts-map__road { position: absolute; display: block; height: 16px; border: 4px solid rgba(255, 255, 255, .9); border-radius: 999px; background: rgba(81, 143, 215, .23); box-shadow: 0 0 0 1px rgba(62, 119, 187, .09); }
+.etis-contacts-map__road--a { left: -35px; top: 42%; width: 115%; transform: rotate(-15deg); }
+.etis-contacts-map__road--b { left: 18%; top: -10%; width: 105%; transform: rotate(70deg); }
+.etis-contacts-map__road--c { left: 23%; bottom: 11%; width: 95%; transform: rotate(17deg); }
+.etis-contacts-map__marker { position: absolute; z-index: 3; left: 56%; top: 48%; display: flex; align-items: center; gap: 8px; padding: 12px 15px; color: #fff; border: 7px solid rgba(255, 255, 255, .75); border-radius: 17px; background: linear-gradient(145deg, #176fd8, #063f89); box-shadow: 0 20px 38px rgba(6, 63, 137, .28); transform: translate(-50%, -50%); }
+.etis-contacts-map__marker span { font-size: 13px; font-weight: 850; letter-spacing: .04em; }
+.etis-contacts-map__caption { position: absolute; z-index: 3; left: 18px; bottom: 17px; padding: 8px 11px; color: #475569; border: 1px solid rgba(255, 255, 255, .9); border-radius: 10px; background: rgba(255, 255, 255, .83); box-shadow: 0 10px 25px rgba(17, 65, 124, .1); font-size: 11px; font-weight: 750; backdrop-filter: blur(8px); }
+
+.etis-contacts-requisites { display: grid; grid-template-columns: minmax(280px, .72fr) minmax(0, 1.28fr); gap: 20px; padding: 22px; border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; }
+.etis-contacts-requisites__intro { padding: 22px; color: #fff; border-radius: 16px; background: radial-gradient(circle at 100% 0, rgba(121, 190, 255, .27), transparent 36%), linear-gradient(145deg, #063f89, #075ec6); }
+.etis-contacts-requisites__intro > span { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 14px; background: rgba(255, 255, 255, .14); }
+.etis-contacts-requisites__intro h3 { margin: 18px 0 0; font-size: 19px; line-height: 1.25; }
+.etis-contacts-requisites__intro p { margin: 10px 0 0; color: rgba(255, 255, 255, .75); font-size: 12.5px; line-height: 1.55; }
+.etis-contacts-requisites__intro > div { display: flex; align-items: center; gap: 8px; margin-top: 22px; color: rgba(255, 255, 255, .9); font-size: 12px; font-weight: 700; }
+.etis-contacts-requisites dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: start; margin: 0; }
+.etis-contacts-requisites dl > div { padding: 14px 16px; border-bottom: 1px solid #edf2f7; }
+.etis-contacts-requisites dt { color: #94a3b8; font-size: 10.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.etis-contacts-requisites dd { margin: 5px 0 0; color: #334155; font-size: 12.5px; font-weight: 650; line-height: 1.45; overflow-wrap: anywhere; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1279px) {
+  .etis-company-grid--4,
+  .etis-company-process,
+  .etis-contacts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 1023px) {
+  .etis-company-hero--about .etis-company-hero__copy,
+  .etis-company-hero--contacts .etis-company-hero__copy { max-width: 100%; }
+  .etis-company-hero__visual,
+  .etis-contacts-hero__visual { display: none; }
+  .etis-company-story,
+  .etis-contacts-location { grid-template-columns: minmax(0, 1fr); }
+  .etis-company-cta { flex-direction: column; align-items: flex-start; }
+  .etis-contacts-map { min-height: 320px; }
+}
+@media (max-width: 767px) {
+  .etis-company-hero { min-height: 0; padding: 25px 20px; }
+  .etis-company-hero h1 { font-size: clamp(28px, 10vw, 38px); }
+  .etis-company-section,
+  .etis-company-story,
+  .etis-contacts-location,
+  .etis-company-cta { margin-top: 36px; }
+  .etis-company-grid--4,
+  .etis-company-process,
+  .etis-contacts-grid,
+  .etis-contacts-requisites,
+  .etis-contacts-requisites dl { grid-template-columns: minmax(0, 1fr); }
+  .etis-company-story,
+  .etis-contacts-location { padding: 22px 18px; }
+  .etis-company-card,
+  .etis-company-card--compact,
+  .etis-company-process li,
+  .etis-contact-card { min-height: 0; }
+  .etis-company-cta { padding: 24px 20px; }
+  .etis-company-cta__actions { width: 100%; }
+  .etis-company-cta__primary,
+  .etis-company-cta__secondary { flex: 1 1 100%; }
+  .etis-contacts-map { min-height: 280px; }
+  .etis-contacts-requisites { padding: 14px; }
+  .etis-contacts-requisites__intro { padding: 20px; }
+}
+
+/* ---------- Dark theme ---------- */
+html[data-theme="dark"] .etis-company-hero,
+html[data-theme="dark"] .etis-company-story,
+html[data-theme="dark"] .etis-contacts-location {
+  border-color: #1e293b;
+  background:
+    radial-gradient(120% 160% at 100% 0%, rgba(96, 165, 250, .12), transparent 60%),
+    linear-gradient(180deg, #0f1a2e 0%, #0b1424 100%);
+}
+html[data-theme="dark"] .etis-company-hero::before { background-image: linear-gradient(rgba(148, 197, 253, .05) 1px, transparent 1px), linear-gradient(90deg, rgba(148, 197, 253, .05) 1px, transparent 1px); }
+html[data-theme="dark"] .etis-company-hero h1,
+html[data-theme="dark"] .etis-company-section__head h2,
+html[data-theme="dark"] .etis-company-card h3,
+html[data-theme="dark"] .etis-company-story h2,
+html[data-theme="dark"] .etis-company-process h3,
+html[data-theme="dark"] .etis-contact-card strong,
+html[data-theme="dark"] .etis-contacts-location h2,
+html[data-theme="dark"] .etis-contacts-location__facts b { color: #e2e8f0; }
+html[data-theme="dark"] .etis-company-hero__copy > p,
+html[data-theme="dark"] .etis-company-section__head p,
+html[data-theme="dark"] .etis-company-card p,
+html[data-theme="dark"] .etis-company-story__copy > p,
+html[data-theme="dark"] .etis-company-story__copy li,
+html[data-theme="dark"] .etis-company-process p,
+html[data-theme="dark"] .etis-contact-card small,
+html[data-theme="dark"] .etis-contacts-location__copy > p,
+html[data-theme="dark"] .etis-contacts-location__facts small { color: #94a3b8; }
+html[data-theme="dark"] .etis-company-eyebrow,
+html[data-theme="dark"] .etis-company-section__head > span { color: #60a5fa; }
+html[data-theme="dark"] .etis-company-chips > span { color: #94a3b8; border-color: #1e293b; background: rgba(15, 26, 46, .86); }
+html[data-theme="dark"] .etis-company-card,
+html[data-theme="dark"] .etis-company-process li,
+html[data-theme="dark"] .etis-contact-card,
+html[data-theme="dark"] .etis-contacts-requisites { border-color: #1e293b; background: #0f1a2e; }
+html[data-theme="dark"] .etis-company-card__icon,
+html[data-theme="dark"] .etis-contact-card__icon { color: #93c5fd; background: linear-gradient(135deg, #14284a, #16233a); }
+html[data-theme="dark"] .etis-contacts-location__facts > div { border-color: #1e293b; background: #0f1a2e; }
+html[data-theme="dark"] .etis-contacts-requisites dl > div { border-bottom-color: #1b2942; }
+html[data-theme="dark"] .etis-contacts-requisites dd { color: #cbd5e1; }
+html[data-theme="dark"] .etis-contacts-map { border-color: #1e293b; background: linear-gradient(145deg, #13233b, #0f1a2e); }

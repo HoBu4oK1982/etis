@@ -1,0 +1,394 @@
+/* ============================================================
+   БЫСТРЫЙ ФИРМЕННЫЙ ПЕРЕХОД ETIS.KZ
+   Чёткий логотип + frosted glass + 4 лёгкие орбиты GSAP
+   ============================================================ */
+
+
+/*
+ * Всегда резервируем ширину вертикального scrollbar. Поэтому при смене
+ * длинной страницы на короткую и обратно весь интерфейс не прыгает влево.
+ */
+html {
+  scrollbar-gutter: stable;
+}
+
+.etis-pt {
+  --etis-pt-fog-opacity: 0;
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  isolation: isolate;
+  contain: strict;
+  touch-action: none;
+  overscroll-behavior: contain;
+}
+
+/*
+ * Полноэкранное «запотевшее стекло» появляется только во время transition.
+ * Слой лёгкий: умеренный blur, небольшая десатурация и прозрачный молочный тон.
+ * После завершения overlay получает display: none, поэтому размытие не остаётся на странице.
+ */
+.etis-pt::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--etis-pt-fog-opacity);
+  will-change: opacity;
+  background:
+    radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.34), transparent 34%),
+    radial-gradient(circle at 82% 78%, rgba(230, 239, 248, 0.22), transparent 40%),
+    rgba(243, 247, 251, 0.18);
+  -webkit-backdrop-filter: blur(8px) saturate(0.78) contrast(0.96);
+  backdrop-filter: blur(8px) saturate(0.78) contrast(0.96);
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .etis-pt::before {
+    background: rgba(238, 244, 250, 0.72);
+  }
+}
+
+.etis-pt__panel {
+  position: absolute;
+  top: -4%;
+  bottom: -4%;
+  width: 58%;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.etis-pt__panel--left {
+  left: -4%;
+  transform: translateX(-105%);
+  clip-path: polygon(0 0, 100% 0, 84% 100%, 0 100%);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 42%),
+    linear-gradient(135deg, #0a55bf 0%, #073c93 48%, #05285f 100%);
+}
+
+.etis-pt__panel--right {
+  right: -4%;
+  transform: translateX(105%);
+  clip-path: polygon(16% 0, 100% 0, 100% 100%, 0 100%);
+  background:
+    linear-gradient(225deg, rgba(255, 255, 255, 0.07), transparent 42%),
+    linear-gradient(225deg, #0b5dcc 0%, #073e96 48%, #05285f 100%);
+}
+
+.etis-pt__ambient,
+.etis-pt__grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Никакого большого ореола за логотипом — только ровный свет панелей. */
+.etis-pt__ambient {
+  z-index: 1;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.055) 50%,
+    transparent 100%
+  );
+}
+
+.etis-pt__grid {
+  z-index: 2;
+  opacity: 0.14;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.16) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(to bottom, transparent, #000 24%, #000 76%, transparent);
+}
+
+.etis-pt__center {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  perspective: 900px;
+}
+
+.etis-pt__center::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  width: clamp(170px, 15vw, 230px);
+  height: clamp(88px, 8vw, 122px);
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(2, 13, 29, 0.13) 0%,
+    rgba(2, 13, 29, 0.065) 42%,
+    rgba(2, 13, 29, 0) 74%
+  );
+  filter: blur(7px);
+}
+
+/* Отдельные статичные кольца больше не нужны: остаются 4 живые орбиты. */
+.etis-pt__rings {
+  display: none !important;
+}
+
+.etis-pt__orbits {
+  position: absolute;
+  z-index: 1;
+  width: clamp(200px, 20.7vw, 313px);
+  aspect-ratio: 1;
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+.etis-pt__orbit {
+  position: absolute;
+  border-radius: 50%;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.etis-pt__orbit--1 {
+  inset: 1%;
+  border: 1px dashed rgba(125, 204, 255, 0.62);
+}
+
+.etis-pt__orbit--2 {
+  inset: 12%;
+  border: 1px solid rgba(79, 179, 255, 0.6);
+}
+
+.etis-pt__orbit--3 {
+  inset: 23%;
+  border: 1px dashed rgba(159, 218, 255, 0.5);
+}
+
+.etis-pt__orbit--4 {
+  inset: 33%;
+  border: 1px solid rgba(53, 158, 242, 0.52);
+}
+
+.etis-pt__orbit-dot {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  display: block;
+  width: 9px;
+  height: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  background: #168be8;
+  box-shadow:
+    0 0 0 4px rgba(30, 151, 239, 0.12),
+    0 0 14px rgba(24, 145, 232, 0.9),
+    0 0 28px rgba(24, 145, 232, 0.38);
+}
+
+.etis-pt__orbit--1 .etis-pt__orbit-dot {
+  width: 12px;
+  height: 12px;
+  background: #0d75d2;
+}
+
+.etis-pt__orbit--2 .etis-pt__orbit-dot {
+  width: 10px;
+  height: 10px;
+  background: #31a8f5;
+}
+
+.etis-pt__orbit--3 .etis-pt__orbit-dot {
+  width: 8px;
+  height: 8px;
+  background: #67c4ff;
+}
+
+.etis-pt__orbit--4 .etis-pt__orbit-dot {
+  width: 7px;
+  height: 7px;
+  background: #006bc5;
+}
+
+/* Только чистый логотип — без стекла, карточки, рамки и подложки. */
+.etis-pt__logo {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  opacity: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  transform-style: preserve-3d;
+  will-change: opacity, transform, filter;
+}
+
+.etis-pt__logo::before {
+  display: none;
+}
+
+/* Оригинальный синий логотип из шапки — резкий, без размытой ауры. */
+.etis-pt__logo svg {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: clamp(147px, 14.7vw, 213px);
+  height: auto;
+  opacity: 1;
+  filter: drop-shadow(0 6px 12px rgba(0, 56, 126, 0.16));
+  shape-rendering: geometricPrecision;
+}
+
+.etis-pt__shine {
+  position: absolute;
+  top: -35%;
+  bottom: -35%;
+  left: -38%;
+  width: 24%;
+  opacity: 0;
+  transform: translateX(-180%) skewX(-18deg);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.72),
+    transparent
+  );
+  filter: blur(3px);
+  will-change: transform, opacity;
+}
+
+html.etis-route-transitioning {
+  /* Держим сам scrollbar видимым на всём протяжении transition. */
+  overflow-y: scroll !important;
+}
+
+html.etis-route-transitioning,
+html.etis-route-transitioning body {
+  cursor: progress;
+}
+
+@media (max-width: 767px) {
+  .etis-pt__panel {
+    width: 64%;
+  }
+
+  .etis-pt__panel--left {
+    clip-path: polygon(0 0, 100% 0, 78% 100%, 0 100%);
+  }
+
+  .etis-pt__panel--right {
+    clip-path: polygon(22% 0, 100% 0, 100% 100%, 0 100%);
+  }
+
+  .etis-pt__orbits {
+    width: min(59vw, 233px);
+  }
+
+  .etis-pt__logo {
+    padding: 0;
+    border-radius: 0;
+  }
+
+  .etis-pt__logo svg {
+    width: min(41vw, 165px);
+  }
+
+  .etis-pt__grid {
+    opacity: 0.11;
+    background-size: 34px 34px;
+  }
+}
+
+@media (max-width: 520px) {
+  .etis-pt__panel {
+    width: 68%;
+  }
+
+  .etis-pt__orbits {
+    width: min(88vw, 315px);
+  }
+
+  .etis-pt__logo {
+    max-width: 78vw;
+    padding: 0;
+    border-radius: 0;
+  }
+
+  .etis-pt__logo svg {
+    width: min(59vw, 220px);
+  }
+
+  .etis-pt__orbit-dot {
+    width: 7px;
+    height: 7px;
+    box-shadow:
+      0 0 0 3px rgba(30, 151, 239, 0.11),
+      0 0 11px rgba(24, 145, 232, 0.82);
+  }
+
+  .etis-pt__orbit--1 .etis-pt__orbit-dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .etis-pt__orbit--2 .etis-pt__orbit-dot {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .etis-pt {
+    display: none !important;
+  }
+
+  .etis-pt__content {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .etis-pt::before {
+    -webkit-backdrop-filter: blur(6px) saturate(0.82);
+    backdrop-filter: blur(6px) saturate(0.82);
+  }
+}
+
+/* ============================================================
+   ORBIT DOTS — 2 синих + 2 красных, через одну
+   ============================================================ */
+.etis-pt__orbit--1 .etis-pt__orbit-dot,
+.etis-pt__orbit--3 .etis-pt__orbit-dot {
+  border-color: rgba(255, 255, 255, 0.92);
+  background: #168be8;
+  box-shadow:
+    0 0 0 4px rgba(30, 151, 239, 0.13),
+    0 0 15px rgba(24, 145, 232, 0.95),
+    0 0 30px rgba(24, 145, 232, 0.42);
+}
+
+.etis-pt__orbit--2 .etis-pt__orbit-dot,
+.etis-pt__orbit--4 .etis-pt__orbit-dot {
+  border-color: rgba(255, 245, 245, 0.94);
+  background: #e53935;
+  box-shadow:
+    0 0 0 4px rgba(229, 57, 53, 0.13),
+    0 0 15px rgba(239, 68, 68, 0.92),
+    0 0 30px rgba(220, 38, 38, 0.38);
+}

@@ -1,0 +1,132 @@
+/* ─── Toast Container ─── */
+.etis-toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+@media (max-width: 600px) {
+  .etis-toast-container {
+    bottom: 16px;
+    right: 12px;
+    left: 12px;
+  }
+}
+
+/* ─── Toast Item ─── */
+.etis-toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.10),
+    0 1px 4px rgba(0, 0, 0, 0.06);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  max-width: 380px;
+  cursor: pointer;
+  user-select: none;
+  will-change: transform, opacity;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+@media (max-width: 600px) {
+  .etis-toast {
+    max-width: 100%;
+  }
+}
+
+/* ─── Variants ─── */
+.etis-toast[data-variant="cart"] {
+  background: rgba(5, 150, 105, 0.92);
+  color: #fff;
+}
+
+.etis-toast[data-variant="wishlist"] {
+  background: rgba(219, 39, 119, 0.92);
+  color: #fff;
+}
+
+.etis-toast[data-variant="compare"] {
+  background: rgba(37, 99, 235, 0.92);
+  color: #fff;
+}
+
+.etis-toast[data-variant="success"] {
+  background: rgba(5, 150, 105, 0.92);
+  color: #fff;
+}
+
+.etis-toast[data-variant="error"] {
+  background: rgba(220, 38, 38, 0.92);
+  color: #fff;
+}
+
+.etis-toast[data-variant="info"] {
+  background: rgba(15, 32, 55, 0.92);
+  color: #fff;
+}
+
+/* ─── Icon circle ─── */
+.etis-toast__icon {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.etis-toast__icon svg {
+  display: block;
+}
+
+/* ─── Text ─── */
+.etis-toast__text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* ─── Close ─── */
+.etis-toast__close {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 160ms ease, background 160ms ease;
+  padding: 0;
+}
+
+.etis-toast__close:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* ─── Dark theme ─── */
+[data-theme="dark"] .etis-toast {
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.32),
+    0 1px 4px rgba(0, 0, 0, 0.18);
+  border-color: rgba(255, 255, 255, 0.08);
+}

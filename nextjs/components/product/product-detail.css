@@ -1,0 +1,1527 @@
+/* ============================================================
+   Карточка товара — стили страницы, карточки в списке и элементов
+   ============================================================ */
+
+/* ---------- Иконочная кнопка (избранное / сравнить) ---------- */
+
+.etis-icon-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid var(--icon-btn-border, #e2e8f0);
+  background: var(--icon-btn-bg, #ffffff);
+  color: var(--icon-btn-fg, #475569);
+  cursor: pointer;
+  overflow: visible;
+  transition:
+    background-color 260ms ease,
+    color 260ms ease,
+    border-color 260ms ease,
+    box-shadow 260ms ease;
+}
+
+.etis-icon-btn:hover {
+  --icon-btn-border: #cbd5e1;
+  --icon-btn-fg: #0a1628;
+  box-shadow: 0 6px 16px rgba(15, 42, 99, 0.08);
+}
+
+.etis-icon-btn[data-variant="wishlist"][data-active="true"] {
+  --icon-btn-bg: #fff1f2;
+  --icon-btn-border: #fecdd3;
+  --icon-btn-fg: #e11d48;
+}
+.etis-icon-btn[data-variant="wishlist"][data-active="true"]:hover {
+  --icon-btn-bg: #ffe4e6;
+  box-shadow: 0 8px 20px rgba(225, 29, 72, 0.18);
+}
+
+.etis-icon-btn[data-variant="compare"][data-active="true"] {
+  --icon-btn-bg: #eff6ff;
+  --icon-btn-border: #bfdbfe;
+  --icon-btn-fg: #2563eb;
+}
+.etis-icon-btn[data-variant="compare"][data-active="true"]:hover {
+  --icon-btn-bg: #dbeafe;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.20);
+}
+
+.etis-icon-btn__icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+}
+
+.etis-icon-btn__ring {
+  position: absolute;
+  inset: -2px;
+  border-radius: 999px;
+  pointer-events: none;
+  border: 2px solid currentColor;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.etis-icon-btn__particles {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.etis-icon-btn__particle {
+  position: absolute;
+  display: inline-flex;
+  color: currentColor;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.etis-icon-btn__tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: #0a1628;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 180ms ease, transform 180ms ease;
+  z-index: 20;
+}
+.etis-icon-btn__tooltip[data-visible="true"] {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ---------- Кнопка "В корзину" ---------- */
+
+.etis-add-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  padding: 0 26px;
+  border: 0;
+  border-radius: 12px;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  overflow: hidden;
+  background: linear-gradient(135deg, #10b981 0%, #059669 60%, #047857 100%);
+  box-shadow:
+    0 10px 22px rgba(16, 185, 129, 0.35),
+    0 2px 4px rgba(4, 120, 87, 0.20),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+  transition:
+    box-shadow 260ms ease,
+    filter 260ms ease,
+    transform 220ms ease;
+  will-change: transform;
+}
+
+.etis-add-btn:hover:not(:disabled) {
+  filter: brightness(1.05);
+  box-shadow:
+    0 14px 30px rgba(16, 185, 129, 0.45),
+    0 4px 8px rgba(4, 120, 87, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+.etis-add-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.etis-add-btn:disabled { cursor: default; }
+
+.etis-add-btn[data-unavailable="true"] {
+  cursor: not-allowed;
+  color: #7a8493;
+  background: linear-gradient(135deg, #e6e9ee 0%, #d6dbe3 55%, #c7ced8 100%);
+  box-shadow:
+    0 5px 12px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  filter: none;
+  opacity: 0.94;
+}
+.etis-add-btn[data-unavailable="true"] .etis-add-btn__shimmer,
+.etis-add-btn[data-unavailable="true"] .etis-add-btn__ripple {
+  display: none;
+}
+.etis-add-btn[data-unavailable="true"] .etis-add-btn__icon,
+.etis-add-btn[data-unavailable="true"] .etis-add-btn__label {
+  color: #7a8493;
+}
+html[data-theme="dark"] .etis-add-btn[data-unavailable="true"] {
+  color: #718096;
+  background: linear-gradient(135deg, #263244 0%, #202b3b 55%, #1a2432 100%);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  box-shadow: none;
+}
+html[data-theme="dark"] .etis-add-btn[data-unavailable="true"] .etis-add-btn__icon,
+html[data-theme="dark"] .etis-add-btn[data-unavailable="true"] .etis-add-btn__label {
+  color: #718096;
+}
+
+.etis-add-btn__shimmer {
+  position: absolute;
+  top: 0;
+  left: -30%;
+  width: 30%;
+  height: 100%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.20) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  transform: skewX(-18deg);
+  transition: left 850ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.etis-add-btn:hover .etis-add-btn__shimmer { left: 130%; }
+
+.etis-add-btn__ripple {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at var(--rx, 50%) var(--ry, 50%),
+      rgba(255, 255, 255, 0.55) 0%,
+      rgba(255, 255, 255, 0.30) 30%,
+      transparent 60%);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.etis-add-btn__content {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.etis-add-btn__icon-slot {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+.etis-add-btn__icon {
+  position: absolute;
+  inset: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity;
+}
+.etis-add-btn__label-slot {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  line-height: 1.2;
+  height: 1.2em;
+}
+.etis-add-btn__label { display: block; will-change: transform, opacity; }
+.etis-add-btn__label--success { position: absolute; inset: 0; }
+
+/* ============================================================
+   КАРТОЧКА ТОВАРА В СПИСКЕ (grid item)
+   Ссылки на изображении и заголовке ведут на детальную страницу.
+   Правая колонка кнопок работает поверх (event.stopPropagation внутри
+   AnimatedIconButton / AddToCartButton через onClick).
+   ============================================================ */
+
+.etis-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: box-shadow 260ms ease, transform 260ms ease, border-color 260ms ease;
+}
+.etis-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 18px 40px rgba(15, 42, 99, 0.10);
+  transform: translateY(-2px);
+}
+
+/* Media (верхний блок с картинкой) */
+.etis-card__media {
+  position: relative;
+  background: #ffffff;
+  padding: 14px;
+}
+.etis-card__media-link {
+  position: relative;
+  display: block;
+  aspect-ratio: 1 / 1;
+  /* Белая подложка: серая рамка вокруг фото товара выглядела грязно */
+  background: #ffffff;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.etis-card__badges {
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.etis-card__stock {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #16a34a;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+.etis-card__stock-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #16a34a;
+}
+
+/* ---------- Бренд в карточке каталога ---------- */
+
+.etis-card__brand {
+  display: inline-flex;
+  align-items: center;
+  max-width: 60%;
+  padding-top: 2px;
+  transition: opacity 180ms ease;
+}
+.etis-card__brand:hover { opacity: 0.72; }
+
+.etis-card__brand-logo {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 26px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.etis-card__brand-text {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: color 180ms ease;
+}
+.etis-card__brand:hover .etis-card__brand-text { color: #2563eb; }
+
+/* ---------- Бренд на странице товара ---------- */
+
+.etis-info__brand {
+  display: inline-flex;
+  align-items: center;
+  max-width: 190px;
+  transition: opacity 180ms ease;
+}
+.etis-info__brand:hover { opacity: 0.75; }
+
+.etis-info__brand-logo {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 34px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.etis-info__brand-text {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: color 180ms ease;
+}
+.etis-info__brand:hover .etis-info__brand-text { color: #2563eb; }
+
+/* ---------- Заглушка «нет фото» ----------
+   Логотип из шапки на минимальной прозрачности. Grayscale не нужен —
+   градиент логотипа при opacity .09 и так уходит в еле заметный
+   голубоватый оттенок, который не конфликтует с белой подложкой. */
+
+.etis-nophoto {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10%;
+  user-select: none;
+  pointer-events: none;
+}
+.etis-nophoto__logo {
+  width: auto;
+  /* Логотип крупный, но не шире плитки: max-width страхует
+     от переполнения на узких карточках */
+  max-width: 88%;
+  height: auto;
+  opacity: 0.1;
+}
+.etis-card:hover .etis-nophoto__logo { opacity: 0.14; }
+
+.etis-nophoto__caption {
+  color: #b3bfcd;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+}
+
+/* Подложка под фото — строго белая на всех уровнях.
+   Если где-то всплывёт серый прямоугольник вокруг товара —
+   правится здесь, других источников фона у медиа-блока нет. */
+.etis-card,
+.etis-card__media,
+.etis-card__media-link,
+.etis-card__media-link img { background-color: #ffffff; }
+/* Серый фон / вотермарк запечён в самих JPG — mix-blend-mode: multiply
+   убирает светлый фон изображения, сохраняя сам товар. */
+.etis-card__media-link img { mix-blend-mode: multiply; }
+
+/* Body */
+.etis-card__body {
+  padding: 18px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+.etis-card__title {
+  display: block;
+  color: #0a1628;
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin: 6px 0 14px;
+  min-height: 2.5em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 180ms ease;
+}
+.etis-card__title:hover { color: #2563eb; }
+
+/* Плитки характеристик */
+.etis-card__attrs {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.etis-card__attr {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+.etis-card__attr:last-child { border-bottom: 0; }
+.etis-card__attr-icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #2563eb;
+}
+.etis-card__attr-name { color: #64748b; font-size: 13px; line-height: 1.2; }
+.etis-card__attr-value { color: #0a1628; font-size: 13px; font-weight: 700; white-space: nowrap; }
+
+.etis-card__bottom {
+  margin-top: auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.etis-card__price { display: flex; flex-direction: column; gap: 2px; }
+.etis-card__price-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: #0a1628;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+.etis-card__price-value--sale {
+  color: #b51228;
+}
+
+/* «Цена по запросу» — вдвое мельче, стоит слева от кнопки на одной строке */
+.etis-card__price-value[data-request] {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+.etis-card__price-old {
+  position: relative;
+  display: inline-flex;
+  width: max-content;
+  font-size: 12px;
+  color: #7b8798;
+  line-height: 1;
+  text-decoration: none;
+}
+.etis-card__price-old::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  top: 50%;
+  height: 1.5px;
+  border-radius: 999px;
+  background: #991f2f;
+  transform: translateY(-50%) rotate(-2deg);
+  pointer-events: none;
+}
+
+/* Кнопка "В корзину" в карточке — компактнее */
+.etis-card__bottom .etis-add-btn { min-height: 46px; padding: 0 18px; font-size: 13px; }
+.etis-card__bottom .etis-add-btn .etis-add-btn__content { gap: 8px; }
+
+
+/* ---------- Горизонтальный вид карточки в режиме «Строка» ---------- */
+
+.etis-card--list {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  min-height: 252px;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.etis-card--list:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 36px rgba(15, 42, 99, 0.09);
+}
+
+.etis-card--list .etis-card__media {
+  min-width: 0;
+  min-height: 250px;
+  padding: 16px;
+  border-right: 1px solid #eef2f7;
+}
+
+.etis-card--list .etis-card__media-link {
+  width: 100%;
+  height: 100%;
+  min-height: 218px;
+  aspect-ratio: auto;
+}
+
+.etis-card--list .etis-card__body {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  column-gap: 28px;
+  align-items: start;
+  padding: 24px 26px;
+}
+
+.etis-card--list .etis-card__meta {
+  grid-column: 1 / -1;
+  margin-bottom: 8px !important;
+}
+
+.etis-card--list .etis-card__brand {
+  max-width: 220px;
+}
+
+.etis-card--list .etis-card__title {
+  grid-column: 1;
+  grid-row: 2;
+  max-width: 720px;
+  min-height: 0;
+  margin: 4px 0 14px;
+  font-size: 19px;
+  line-height: 1.3;
+  -webkit-line-clamp: 2;
+}
+
+.etis-card--list .etis-card__attrs {
+  grid-column: 1;
+  grid-row: 3;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 22px;
+  margin: 0;
+}
+
+.etis-card--list .etis-card__attr {
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  gap: 8px;
+  padding: 7px 0;
+}
+
+.etis-card--list .etis-card__attr-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.etis-card--list .etis-card__bottom {
+  grid-column: 2;
+  grid-row: 2 / span 2;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 18px;
+  margin: 0;
+  padding-left: 26px;
+  border-left: 1px solid #eef2f7;
+}
+
+.etis-card--list .etis-card__price {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.etis-card--list .etis-card__price-value {
+  font-size: 25px;
+}
+
+.etis-card--list .etis-card__bottom .etis-add-btn {
+  width: 100%;
+  min-height: 48px;
+  justify-content: center;
+}
+
+@media (max-width: 1180px) {
+  .etis-card--list {
+    grid-template-columns: 210px minmax(0, 1fr);
+  }
+
+  .etis-card--list .etis-card__body {
+    grid-template-columns: minmax(0, 1fr) 190px;
+    column-gap: 20px;
+    padding: 22px;
+  }
+
+  .etis-card--list .etis-card__bottom {
+    padding-left: 20px;
+  }
+}
+
+@media (max-width: 900px) {
+  .etis-card--list {
+    grid-template-columns: 180px minmax(0, 1fr);
+    min-height: 220px;
+  }
+
+  .etis-card--list .etis-card__media {
+    min-height: 218px;
+    padding: 12px;
+  }
+
+  .etis-card--list .etis-card__media-link {
+    min-height: 194px;
+  }
+
+  .etis-card--list .etis-card__body {
+    grid-template-columns: minmax(0, 1fr) 160px;
+    column-gap: 16px;
+    padding: 18px;
+  }
+
+  .etis-card--list .etis-card__title {
+    font-size: 16px;
+  }
+
+  .etis-card--list .etis-card__bottom {
+    gap: 12px;
+    padding-left: 16px;
+  }
+
+  .etis-card--list .etis-card__price-value {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .etis-card--list {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .etis-card--list .etis-card__media {
+    min-height: 0;
+    padding: 14px;
+    border-right: 0;
+  }
+
+  .etis-card--list .etis-card__media-link {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 1 / 1;
+  }
+
+  .etis-card--list .etis-card__body {
+    display: flex;
+    flex-direction: column;
+    padding: 18px 20px 20px;
+  }
+
+  .etis-card--list .etis-card__title {
+    min-height: 2.5em;
+    margin: 6px 0 14px;
+    font-size: 14px;
+  }
+
+  .etis-card--list .etis-card__attrs {
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 16px;
+  }
+
+  .etis-card--list .etis-card__bottom {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: auto;
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .etis-card--list .etis-card__price {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .etis-card--list .etis-card__bottom .etis-add-btn {
+    width: auto;
+  }
+}
+
+/* Адаптив для карточки в узкой сетке (4 в ряд) */
+@media (max-width: 900px) {
+  .etis-card__badges { top: 18px; left: 18px; }
+  .etis-card__stock { top: 18px; right: 18px; font-size: 10px; padding: 4px 8px; }
+  .etis-card__title { font-size: 14px; }
+  .etis-card__price-value { font-size: 18px; }
+  .etis-card__bottom .etis-add-btn { min-height: 42px; padding: 0 14px; font-size: 12px; }
+}
+
+/* ============================================================
+   ДЕТАЛЬНАЯ СТРАНИЦА ТОВАРА
+   ============================================================ */
+
+/* ---------- Плитки характеристик (правая колонка) ---------- */
+
+.etis-spec-tile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+.etis-spec-tile__icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #dbeafe;
+  color: #2563eb;
+  flex-shrink: 0;
+}
+.etis-spec-tile__label { color: #64748b; font-size: 13px; line-height: 1.2; }
+.etis-spec-tile__value { color: #0a1628; font-size: 15px; font-weight: 700; line-height: 1.2; margin-top: 2px; }
+
+/* ---------- Вкладки ---------- */
+
+.etis-tabs-card {
+  overflow: hidden;
+}
+
+.etis-tabs {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: 30px;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 22px;
+}
+
+.etis-tab {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  padding: 13px 3px 16px;
+  border: 0;
+  background: transparent;
+  color: #64748b;
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  cursor: pointer;
+  transition:
+    color 220ms ease,
+    text-shadow 220ms ease;
+}
+
+.etis-tab:hover {
+  color: #0a1628;
+}
+
+.etis-tab[data-active="true"] {
+  color: #1267da;
+  text-shadow: 0 8px 22px rgba(18, 103, 218, 0.12);
+}
+
+.etis-tab:focus-visible {
+  outline: 2px solid rgba(37, 99, 235, 0.42);
+  outline-offset: 5px;
+  border-radius: 6px;
+}
+
+.etis-tabs__indicator {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  bottom: -1px;
+  width: 0;
+  height: 4px;
+  border-radius: 999px 999px 2px 2px;
+  pointer-events: none;
+  background: linear-gradient(90deg, #0d56c8 0%, #1687f5 58%, #73c7ff 100%);
+  box-shadow:
+    0 4px 12px rgba(18, 103, 218, 0.26),
+    0 0 0 1px rgba(255, 255, 255, 0.45) inset;
+  transform: translate3d(0, 0, 0);
+  will-change: transform, width;
+}
+
+.etis-tabs__panel {
+  position: relative;
+  min-height: 56px;
+  outline: none;
+  transform-origin: 50% 0%;
+  will-change: transform, opacity, filter;
+}
+
+.etis-tabs__panel:focus-visible {
+  outline: 2px solid rgba(37, 99, 235, 0.3);
+  outline-offset: 8px;
+  border-radius: 8px;
+}
+
+/* На узких экранах вкладки прокручиваются, а индикатор едет вместе с ними. */
+@media (max-width: 767px) {
+  .etis-tabs-card {
+    padding: 18px 16px;
+  }
+
+  .etis-tabs {
+    gap: 22px;
+    margin-inline: -2px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+  }
+
+  .etis-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .etis-tab {
+    padding-top: 10px;
+    padding-bottom: 14px;
+    font-size: 17px;
+    white-space: nowrap;
+  }
+
+  .etis-tabs__indicator {
+    height: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .etis-tabs,
+  .etis-tab {
+    scroll-behavior: auto;
+    transition: none;
+  }
+
+  .etis-tabs__panel,
+  .etis-tabs__indicator {
+    will-change: auto;
+  }
+}
+
+/* ---------- Прайс-блок ---------- */
+
+.etis-price { display: flex; align-items: baseline; gap: 10px; }
+.etis-price__value { font-size: 34px; font-weight: 800; color: #0a1628; letter-spacing: -0.02em; }
+.etis-price__value--sale { color: #b51228; }
+.etis-price__old {
+  position: relative;
+  display: inline-flex;
+  width: max-content;
+  font-size: 18px;
+  color: #7b8798;
+  text-decoration: none;
+}
+.etis-price__old::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  top: 50%;
+  height: 2px;
+  border-radius: 999px;
+  background: #991f2f;
+  transform: translateY(-50%) rotate(-2deg);
+  pointer-events: none;
+}
+
+/* ---------- Галерея ---------- */
+
+.etis-gallery {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 24px;
+}
+.etis-gallery__stage {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
+}
+.etis-gallery__slide { position: absolute; inset: 0; display: grid; place-items: center; padding: 20px; }
+.etis-gallery__slide img { mix-blend-mode: multiply; }
+.etis-gallery__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #e2e8f0;
+  color: #0a1628;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 180ms ease, transform 180ms ease;
+  z-index: 3;
+}
+.etis-gallery__nav:hover { background: #ffffff; transform: translateY(-50%) scale(1.06); }
+.etis-gallery__nav--prev { left: 12px; }
+.etis-gallery__nav--next { right: 12px; }
+
+.etis-gallery__thumbs { display: flex; gap: 10px; margin-top: 16px; }
+.etis-gallery__thumb {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 2px solid #eef2f7;
+  cursor: pointer;
+  overflow: hidden;
+  padding: 6px;
+  transition: border-color 180ms ease, transform 180ms ease;
+}
+.etis-gallery__thumb:hover { border-color: #cfe0f5; transform: translateY(-2px); }
+.etis-gallery__thumb[data-active="true"] { border-color: #2563eb; }
+
+/* ---------- Info карточка (правая колонка) ---------- */
+
+.etis-info {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 28px;
+}
+.etis-info__stock {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #16a34a;
+  font-size: 12px;
+  font-weight: 700;
+}
+.etis-info__stock::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #16a34a;
+}
+
+.etis-info__title {
+  margin: 12px 0 14px;
+  color: #0a1628;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.etis-info__short { color: #52647e; font-size: 14px; line-height: 1.55; margin: 0 0 18px; }
+.etis-info__sku {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  color: #52647e;
+  font-size: 13px;
+  margin-bottom: 18px;
+}
+.etis-info__sku strong { color: #0a1628; font-weight: 700; }
+
+.etis-info__actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+.etis-info__actions .etis-add-btn { flex: 1 1 260px; }
+
+.etis-info__secondary {
+  flex: 1 1 220px;
+  min-height: 54px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 22px;
+  border-radius: 12px;
+  border: 1.5px solid #cbd5e1;
+  background: #ffffff;
+  color: #0a1628;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 180ms ease, color 180ms ease, background 180ms ease;
+}
+.etis-info__secondary:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+  background: #eff6ff;
+}
+
+.etis-info__quick { display: flex; gap: 10px; margin-top: 18px; }
+
+/* ---------- Фичи и похожие ---------- */
+
+/* Блок преимуществ: один контейнер со строками вместо трёх узких плиток */
+
+.etis-features {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.etis-features__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  border-bottom: 1px solid #eef2f7;
+  transition: background-color 180ms ease;
+}
+.etis-features__row:hover { background: #f8fbff; }
+
+.etis-features__icon {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  color: #2563eb;
+  border-radius: 12px;
+  background: linear-gradient(140deg, #eff6ff, #dbeafe);
+  transition: color 180ms ease, background 180ms ease;
+}
+.etis-features__row:hover .etis-features__icon {
+  color: #1d4ed8;
+  background: linear-gradient(140deg, #e0edfd, #c7ddfb);
+}
+
+.etis-features__body { min-width: 0; padding-top: 2px; }
+
+.etis-features__title {
+  color: #0a1628;
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+.etis-features__desc {
+  margin-top: 4px;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Нижняя строка-призыв: тот же ритм, но акцентная */
+.etis-features__cta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  color: #0b3f9c;
+  background: linear-gradient(100deg, #f2f8ff, #eaf3ff);
+  transition: background 200ms ease;
+}
+.etis-features__cta:hover { background: linear-gradient(100deg, #e8f2ff, #dceaff); }
+.etis-features__cta > svg {
+  margin-left: auto;
+  flex: 0 0 auto;
+  transition: transform 200ms ease;
+}
+.etis-features__cta:hover > svg { transform: translateX(4px); }
+
+.etis-features__cta-icon {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0871e9, #0450b6);
+  box-shadow: 0 8px 18px rgba(6, 92, 199, 0.22);
+}
+
+.etis-features__cta-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  color: #5a6b80;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.etis-features__cta-text strong {
+  color: #0a1628;
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+@media (max-width: 767px) {
+  .etis-features__row,
+  .etis-features__cta { padding: 14px 15px; gap: 12px; }
+  .etis-features__icon,
+  .etis-features__cta-icon { width: 38px; height: 38px; border-radius: 11px; }
+}
+
+.etis-similar {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 20px;
+}
+.etis-similar__title { font-size: 18px; font-weight: 800; color: #0a1628; margin: 0 0 18px; }
+
+/* ---------- Compare page ---------- */
+
+.etis-compare-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+.etis-compare-table th,
+.etis-compare-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: top;
+  font-size: 14px;
+}
+.etis-compare-table th {
+  text-align: left;
+  color: #64748b;
+  font-weight: 600;
+  background: #f8fafc;
+  width: 240px;
+}
+.etis-compare-table td { color: #0a1628; }
+.etis-compare-table tr:last-child th,
+.etis-compare-table tr:last-child td { border-bottom: 0; }
+
+/* ---------- Иконки правой навигации (Хиты/Новинки/Скидки) ---------- */
+
+.etis-nav-icon--hit  { color: #f97316; }  /* orange-500 */
+.etis-nav-icon--new  { color: #16a34a; }  /* emerald-600 */
+.etis-nav-icon--sale { color: #b91c1c; }  /* red-700 */
+
+/* ============================================================
+   ETIS PRODUCT DARK THEME
+   ============================================================ */
+html[data-theme="dark"] .etis-card {
+  border-color: #22324a;
+  background: linear-gradient(180deg, #101d31 0%, #0b1628 100%);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
+}
+html[data-theme="dark"] .etis-card:hover {
+  border-color: #315078;
+  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.34), 0 0 0 1px rgba(96, 165, 250, 0.05);
+}
+html[data-theme="dark"] .etis-card,
+html[data-theme="dark"] .etis-card__media { background-color: #0d192b; }
+html[data-theme="dark"] .etis-card__media-link,
+html[data-theme="dark"] .etis-card__media-link img {
+  background-color: #f7f9fc;
+}
+html[data-theme="dark"] .etis-card__media-link {
+  box-shadow: inset 0 0 0 1px rgba(15, 42, 75, 0.08);
+}
+html[data-theme="dark"] .etis-card__body {
+  background: linear-gradient(180deg, rgba(15, 29, 49, 0.98), #0b1628);
+}
+html[data-theme="dark"] .etis-card__title,
+html[data-theme="dark"] .etis-card__price-value,
+html[data-theme="dark"] .etis-card__attr-value { color: #f2f6fd; }
+html[data-theme="dark"] .etis-card__title:hover { color: #7db8ff; }
+html[data-theme="dark"] .etis-card__brand-text,
+html[data-theme="dark"] .etis-card__attr-name { color: #91a1b8; }
+html[data-theme="dark"] .etis-card__attr { border-bottom-color: #1c2b42; }
+html[data-theme="dark"] .etis-card__attr-icon {
+  color: #73b6ff;
+  background: #132a4b;
+}
+html[data-theme="dark"] .etis-card--list .etis-card__media { border-right-color: #22324a; }
+html[data-theme="dark"] .etis-card--list .etis-card__bottom { border-left-color: #22324a; }
+
+html[data-theme="dark"] .etis-icon-btn {
+  --icon-btn-border: #2a3b55;
+  --icon-btn-bg: #111f34;
+  --icon-btn-fg: #b8c4d5;
+}
+html[data-theme="dark"] .etis-icon-btn:hover {
+  --icon-btn-border: #41618b;
+  --icon-btn-bg: #172944;
+  --icon-btn-fg: #ffffff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.24);
+}
+html[data-theme="dark"] .etis-icon-btn[data-variant="wishlist"][data-active="true"] {
+  --icon-btn-bg: #3a1725;
+  --icon-btn-border: #7f2948;
+  --icon-btn-fg: #fb7185;
+}
+html[data-theme="dark"] .etis-icon-btn[data-variant="compare"][data-active="true"] {
+  --icon-btn-bg: #122d55;
+  --icon-btn-border: #255e9b;
+  --icon-btn-fg: #7db8ff;
+}
+
+html[data-theme="dark"] .etis-gallery,
+html[data-theme="dark"] .etis-info,
+html[data-theme="dark"] .etis-features,
+html[data-theme="dark"] .etis-similar,
+html[data-theme="dark"] .etis-tabs-card,
+html[data-theme="dark"] .etis-compare-table {
+  color: #dce6f5;
+  border-color: #22324a;
+  background: linear-gradient(180deg, #101d31, #0b1628);
+}
+html[data-theme="dark"] .etis-gallery__stage,
+html[data-theme="dark"] .etis-gallery__thumb {
+  border-color: #2a3b55;
+  background: #f7f9fc;
+}
+html[data-theme="dark"] .etis-gallery__nav {
+  color: #dce6f5;
+  border-color: #2a3b55;
+  background: rgba(13, 25, 43, 0.92);
+}
+html[data-theme="dark"] .etis-gallery__nav:hover { background: #172944; }
+html[data-theme="dark"] .etis-info__title,
+html[data-theme="dark"] .etis-price__value,
+html[data-theme="dark"] .etis-info__sku strong,
+html[data-theme="dark"] .etis-spec-tile__value,
+html[data-theme="dark"] .etis-features__title,
+html[data-theme="dark"] .etis-features__cta-text strong,
+html[data-theme="dark"] .etis-similar__title { color: #f2f6fd; }
+html[data-theme="dark"] .etis-card__price-old,
+html[data-theme="dark"] .etis-price__old {
+  color: #8492a6;
+}
+html[data-theme="dark"] .etis-card__price-old::after,
+html[data-theme="dark"] .etis-price__old::after {
+  background: #c43d4d;
+}
+html[data-theme="dark"] .etis-card__price-value--sale,
+html[data-theme="dark"] .etis-price__value--sale {
+  color: #f05260;
+}
+html[data-theme="dark"] .etis-info__short,
+html[data-theme="dark"] .etis-info__sku,
+html[data-theme="dark"] .etis-spec-tile__label,
+html[data-theme="dark"] .etis-features__desc,
+html[data-theme="dark"] .etis-features__cta-text { color: #9aabc0; }
+html[data-theme="dark"] .etis-info__sku,
+html[data-theme="dark"] .etis-spec-tile {
+  border-color: #22324a;
+  background: #111f34;
+}
+html[data-theme="dark"] .etis-spec-tile__icon,
+html[data-theme="dark"] .etis-features__icon {
+  color: #73b6ff;
+  background: linear-gradient(140deg, #132a4b, #10223e);
+}
+html[data-theme="dark"] .etis-info__secondary {
+  color: #dce6f5;
+  border-color: #334a6b;
+  background: #111f34;
+}
+html[data-theme="dark"] .etis-info__secondary:hover {
+  color: #93c5fd;
+  border-color: #4d83c3;
+  background: #152b49;
+}
+html[data-theme="dark"] .etis-tabs { border-bottom-color: #253650; }
+html[data-theme="dark"] .etis-tab { color: #899ab1; }
+html[data-theme="dark"] .etis-tab:hover { color: #e8f1ff; }
+html[data-theme="dark"] .etis-tab[data-active="true"] { color: #73b6ff; }
+html[data-theme="dark"] .etis-features__row { border-bottom-color: #22324a; }
+html[data-theme="dark"] .etis-features__row:hover { background: #122039; }
+html[data-theme="dark"] .etis-features__cta {
+  color: #9bc9ff;
+  background: linear-gradient(100deg, #102847, #0e203a);
+}
+html[data-theme="dark"] .etis-features__cta:hover { background: linear-gradient(100deg, #143158, #102847); }
+html[data-theme="dark"] .etis-compare-table th,
+html[data-theme="dark"] .etis-compare-table td { border-bottom-color: #22324a; }
+html[data-theme="dark"] .etis-compare-table th { color: #9aabc0; background: #111f34; }
+html[data-theme="dark"] .etis-compare-table td { color: #e7eef9; }
+
+
+/* ============================================================
+   Количество и GSAP-пересчёт цены на странице товара
+   ============================================================ */
+.etis-info__purchase {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.etis-price {
+  position: relative;
+  flex-wrap: wrap;
+}
+
+.etis-price__calculation {
+  flex-basis: 100%;
+  margin-top: 3px;
+  color: #7a8ba5;
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.etis-product-qty {
+  display: inline-grid;
+  grid-template-columns: 42px minmax(48px, auto) 42px;
+  align-items: center;
+  min-height: 46px;
+  padding: 3px;
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  border-radius: 15px;
+  background: linear-gradient(145deg, #f8fbff, #eef5ff);
+  box-shadow: 0 10px 24px rgba(29, 78, 216, 0.08);
+}
+
+.etis-product-qty button {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 11px;
+  color: #1267d8;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.etis-product-qty button:hover:not(:disabled) {
+  color: #fff;
+  background: linear-gradient(135deg, #2684ff, #075ac4);
+  transform: translateY(-1px);
+}
+
+.etis-product-qty button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.etis-product-qty > span {
+  display: inline-block;
+  min-width: 48px;
+  text-align: center;
+  color: #0a1628;
+  font-size: 17px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  will-change: transform, opacity;
+}
+
+html[data-theme="dark"] .etis-price__calculation {
+  color: #91a9c8;
+}
+
+html[data-theme="dark"] .etis-product-qty {
+  border-color: rgba(96, 165, 250, 0.25);
+  background: linear-gradient(145deg, rgba(20, 43, 76, 0.96), rgba(10, 28, 54, 0.96));
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
+}
+
+html[data-theme="dark"] .etis-product-qty > span {
+  color: #f5f9ff;
+}
+
+@media (max-width: 640px) {
+  .etis-info__purchase {
+    align-items: flex-start;
+  }
+
+  .etis-product-qty {
+    order: 3;
+  }
+
+  .etis-info__quick {
+    margin-left: auto;
+  }
+}
+
+/* ============================================================
+   Читаемый HTML-контент товара в тёмной теме
+   Summernote часто сохраняет inline color:#444; поэтому здесь нужен
+   !important, иначе текст остаётся почти чёрным на тёмной карточке.
+   ============================================================ */
+.etis-tabs__panel .product-description,
+.etis-tabs__panel .product-description * {
+  font-family: var(--font-sans) !important;
+}
+
+.etis-tabs__panel .product-description img {
+  display: block;
+  max-width: 100% !important;
+  height: auto !important;
+  margin: 18px auto;
+  padding: 6px;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  background: #fff;
+  object-fit: contain;
+}
+
+html[data-theme="dark"] .etis-tabs__panel .product-description,
+html[data-theme="dark"] .etis-tabs__panel .product-description :where(
+  p, span, div, li, ul, ol, em, i, u, small, label, td, th, blockquote
+) {
+  color: #b9c8dc !important;
+}
+
+html[data-theme="dark"] .etis-tabs__panel .product-description :where(
+  h1, h2, h3, h4, h5, h6, strong, b
+) {
+  color: #f3f7fd !important;
+}
+
+html[data-theme="dark"] .etis-tabs__panel .product-description a {
+  color: #76b8ff !important;
+}
+
+html[data-theme="dark"] .etis-tabs__panel .product-description :where(hr) {
+  border-color: #2a3b55 !important;
+}
+
+html[data-theme="dark"] .etis-tabs__panel .product-description :where(table, td, th) {
+  border-color: #2a3b55 !important;
+}
+
+html[data-theme="dark"] .etis-tabs__panel .product-description blockquote {
+  border-left-color: #3b82f6 !important;
+  background: #111f34 !important;
+}
+
+
+/* ---------- Акционная цена: новая красная, старая приглушённая и зачёркнутая ---------- */
+.etis-card__price-value.etis-card__price-value--sale,
+.etis-price__value.etis-price__value--sale {
+  color: #b51228;
+}
+html[data-theme="dark"] .etis-card__price-value.etis-card__price-value--sale,
+html[data-theme="dark"] .etis-price__value.etis-price__value--sale {
+  color: #f05260;
+}

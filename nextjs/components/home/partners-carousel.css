@@ -1,0 +1,138 @@
+/* ============================================================
+   Карусель официальных партнёров.
+   Стили только для карусели — глобальный .official-partners
+   с заголовком «Смотреть все» остаётся из globals.css.
+   ============================================================ */
+
+.etis-partners {
+  position: relative;
+  overflow: hidden;
+  margin: 0 -2px; /* компенсация тени карточек */
+  padding: 4px 0;
+}
+
+.etis-partners__track {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  width: max-content;
+  will-change: transform;
+}
+
+.etis-partner {
+  position: relative;
+  flex: 0 0 auto;
+  display: block;
+  width: 200px;
+  height: 94px;
+  padding: 14px;
+  overflow: hidden;
+  border: 1px solid #dde6f0;
+  border-radius: 13px;
+  background: #fff;
+  box-shadow: 0 7px 22px rgba(20, 63, 112, 0.035);
+  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.24s ease, box-shadow 0.24s ease;
+}
+.etis-partner:hover {
+  transform: translateY(-4px);
+  border-color: #bad3ef;
+  box-shadow: 0 16px 34px rgba(20, 63, 112, 0.12);
+}
+.etis-partner:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 3px;
+}
+
+.etis-partner__img {
+  object-fit: contain;
+  padding: 10px;
+  transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.etis-partner:hover .etis-partner__img { transform: scale(1.06); }
+
+/* Мягкая растушёвка по краям — карусель «уходит» в фон,
+   не режется линейкой. */
+.etis-partners__fade {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 70px;
+  pointer-events: none;
+  z-index: 1;
+}
+.etis-partners__fade--l {
+  left: 0;
+  background: linear-gradient(90deg, var(--page-bg, #fff) 20%, rgba(255, 255, 255, 0));
+}
+.etis-partners__fade--r {
+  right: 0;
+  background: linear-gradient(-90deg, var(--page-bg, #fff) 20%, rgba(255, 255, 255, 0));
+}
+
+@media (max-width: 767px) {
+  .etis-partner { width: 160px; height: 82px; }
+  .etis-partners__fade { width: 44px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .etis-partners__track { transform: none !important; }
+}
+
+/* ---- Тёмная тема ----
+   Подложку логотипов оставляем белой — фирменные лого производителей
+   рисуются под светлый фон, на тёмном сплошь чёрные квадраты. */
+html[data-theme="dark"] .etis-partner {
+  border-color: #e6edf6;
+  background: #fff;
+  box-shadow: 0 7px 22px rgba(0, 0, 0, 0.35);
+}
+html[data-theme="dark"] .etis-partners__fade--l {
+  background: linear-gradient(90deg, var(--page-bg) 20%, rgba(5, 10, 23, 0));
+}
+html[data-theme="dark"] .etis-partners__fade--r {
+  background: linear-gradient(-90deg, var(--page-bg) 20%, rgba(5, 10, 23, 0));
+}
+
+/* ============================================================
+   ETIS PARTNERS DARK FRAME
+   Логотипы остаются на светлой внутренней сцене, но сами карточки больше
+   не выглядят белыми прямоугольниками на тёмном фоне.
+   ============================================================ */
+html[data-theme="dark"] .etis-partner {
+  padding: 9px;
+  border-color: #22324a;
+  background: linear-gradient(155deg, #101d31, #0b1628);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
+}
+html[data-theme="dark"] .etis-partner::before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  z-index: 0;
+  border-radius: 9px;
+  background: linear-gradient(180deg, #ffffff, #f4f7fb);
+  box-shadow: inset 0 0 0 1px rgba(15, 42, 75, 0.07);
+}
+html[data-theme="dark"] .etis-partner:hover {
+  border-color: #315078;
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.38);
+}
+html[data-theme="dark"] .etis-partner__img { z-index: 1; padding: 14px; }
+
+
+/* ============================================================
+   DARK THEME — заголовок секции официальных партнёров
+   ============================================================ */
+html[data-theme="dark"] .official-partners-heading h2 {
+  color: #f5f8ff !important;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.28);
+}
+
+html[data-theme="dark"] .official-partners-heading a {
+  color: #4ea5ff;
+}
+
+html[data-theme="dark"] .official-partners-heading a:hover {
+  color: #86c4ff;
+}

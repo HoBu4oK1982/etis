@@ -1,0 +1,426 @@
+/* ============================================================
+   Страницы /login и /register — split-карточка внутри общего
+   магазинного layout'а. Header/Footer живут снаружи, здесь только
+   сам блок с canvas-hero и формой.
+   Префикс: .etis-auth-*
+   ============================================================ */
+
+.etis-auth__wrap {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  width: 100%;
+  min-height: 560px;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  box-shadow: 0 24px 60px rgba(4, 26, 66, 0.1);
+}
+
+/* ============================================================
+   Левая панель — canvas-hero
+   ============================================================ */
+
+.etis-auth__hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 36px 36px 40px;
+  overflow: hidden;
+  color: #f4f7ff;
+  background:
+    radial-gradient(120% 100% at 100% 0%, rgba(37, 99, 235, 0.35), transparent 60%),
+    radial-gradient(80% 60% at 0% 100%, rgba(255, 122, 46, 0.18), transparent 55%),
+    linear-gradient(155deg, #071a44 0%, #050f2a 100%);
+}
+
+/* Инженерная сетка поверх фона */
+.etis-auth__hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(148, 197, 253, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 197, 253, 0.06) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: linear-gradient(180deg, #000 0%, #000 60%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 60%, transparent 100%);
+  pointer-events: none;
+}
+
+.etis-auth__hero-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.etis-auth-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Мягкое зерно, чтобы плоский фон не читался «пластиковым» */
+.etis-auth__hero-noise {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.etis-auth__hero-body { position: relative; z-index: 2; }
+
+.etis-auth__title {
+  margin: 12px 0 0;
+  color: #ffffff;
+  font-size: clamp(26px, 2.8vw, 34px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+
+.etis-auth__desc {
+  max-width: 420px;
+  margin: 12px 0 0;
+  color: rgba(232, 240, 255, 0.75);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ============================================================
+   Правая панель — форма
+   ============================================================ */
+
+.etis-auth__form-side {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 42px;
+  background: #ffffff;
+}
+
+.etis-auth__card {
+  width: 100%;
+  max-width: 420px;
+}
+
+.etis-auth__form-title {
+  margin: 0;
+  color: #07183b;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.etis-auth__form-sub {
+  margin: 8px 0 0;
+  color: #64748b;
+  font-size: 13.5px;
+}
+
+.etis-auth__form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.etis-auth__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.etis-auth__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.etis-auth__field > label {
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+}
+.etis-auth__label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.etis-auth__forgot {
+  color: #0866cc;
+  font-size: 12px;
+  font-weight: 700;
+  transition: color 160ms ease;
+}
+.etis-auth__forgot:hover { color: #0b3f9c; text-decoration: underline; }
+
+.etis-auth__input {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.etis-auth__input > svg {
+  position: absolute;
+  left: 13px;
+  color: #94a3b8;
+  pointer-events: none;
+}
+.etis-auth__input > input {
+  width: 100%;
+  height: 46px;
+  padding: 0 42px 0 40px;
+  color: #07183b;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+}
+.etis-auth__input > input::placeholder { color: #a5b4c8; }
+.etis-auth__input > input:focus {
+  border-color: #93c5fd;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+.etis-auth__input > input:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.etis-auth__eye {
+  position: absolute;
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  color: #64748b;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  transition: color 160ms ease, background 160ms ease;
+}
+.etis-auth__eye:hover { color: #0b52c0; background: #eaf3ff; }
+
+.etis-auth__field-err {
+  color: #dc2626;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.etis-auth__agree {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 2px 0;
+  color: #475569;
+  font-size: 12.5px;
+  line-height: 1.5;
+  cursor: pointer;
+  user-select: none;
+}
+.etis-auth__agree input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.etis-auth__agree-box {
+  flex: 0 0 auto;
+  position: relative;
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 5px;
+  background: #ffffff;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+.etis-auth__agree-box::after {
+  content: "";
+  width: 8px;
+  height: 5px;
+  border-left: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+  transform: translateY(-1px) rotate(-45deg) scale(0);
+  transition: transform 160ms ease;
+}
+.etis-auth__agree input:checked + .etis-auth__agree-box {
+  border-color: #2563eb;
+  background: linear-gradient(135deg, #2563eb, #0b52c0);
+}
+.etis-auth__agree input:checked + .etis-auth__agree-box::after {
+  transform: translateY(-1px) rotate(-45deg) scale(1);
+}
+.etis-auth__agree a {
+  color: #0866cc;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.etis-auth__error {
+  padding: 11px 14px;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  background: #fee2e2;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.etis-auth__submit {
+  position: relative;
+  overflow: hidden;
+  height: 50px;
+  color: #ffffff;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2563eb 0%, #0b52c0 60%, #063f89 100%);
+  box-shadow: 0 14px 30px rgba(5, 91, 199, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  font-size: 14.5px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: transform 220ms ease, box-shadow 220ms ease, filter 220ms ease;
+}
+.etis-auth__submit::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -60%;
+  width: 60%;
+  transform: skewX(-24deg);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.22),
+    transparent
+  );
+  transition: left 700ms ease;
+}
+.etis-auth__submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 20px 40px rgba(5, 91, 199, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+.etis-auth__submit:hover:not(:disabled)::before { left: 130%; }
+.etis-auth__submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  box-shadow: none;
+  transform: none;
+}
+
+.etis-auth__divider {
+  position: relative;
+  margin-top: 20px;
+  color: #94a3b8;
+  font-size: 12px;
+  text-align: center;
+}
+.etis-auth__divider::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: #e2e8f0;
+}
+.etis-auth__divider span {
+  position: relative;
+  z-index: 1;
+  padding: 0 12px;
+  background: #ffffff;
+}
+
+.etis-auth__switch {
+  margin: 12px 0 0;
+  color: #64748b;
+  font-size: 13.5px;
+  text-align: center;
+}
+.etis-auth__switch-link {
+  color: #0866cc;
+  font-weight: 800;
+  transition: color 160ms ease;
+}
+.etis-auth__switch-link:hover { color: #0b3f9c; text-decoration: underline; }
+
+/* ============================================================
+   Адаптив
+   ============================================================ */
+
+@media (max-width: 1023px) {
+  .etis-auth__wrap { grid-template-columns: 1fr; min-height: 0; }
+  .etis-auth__hero {
+    min-height: 240px;
+    padding: 28px 30px;
+    justify-content: flex-end;
+  }
+  .etis-auth__form-side { padding: 32px 26px; }
+  .etis-auth__card { max-width: 100%; }
+}
+
+@media (max-width: 767px) {
+  .etis-auth__wrap { border-radius: 20px; }
+  .etis-auth__hero { padding: 24px 22px; min-height: 210px; }
+  .etis-auth__logo { padding: 8px 12px; margin-bottom: 16px; }
+  .etis-auth__row { grid-template-columns: 1fr; }
+  .etis-auth__form-side { padding: 26px 20px; }
+  .etis-auth__submit { height: 48px; }
+}
+
+/* ============================================================
+   Тёмная тема
+   ============================================================ */
+
+html[data-theme="dark"] .etis-auth__wrap {
+  border-color: #1e293b;
+  background: #0f1a2e;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+html[data-theme="dark"] .etis-auth__form-side { background: #0f1a2e; }
+html[data-theme="dark"] .etis-auth__form-title { color: #e2e8f0; }
+html[data-theme="dark"] .etis-auth__form-sub { color: #94a3b8; }
+html[data-theme="dark"] .etis-auth__field > label { color: #94a3b8; }
+
+html[data-theme="dark"] .etis-auth__input > input {
+  /* Solid hex вместо rgba — иначе Chrome/Windows подставляет белый */
+  color: #e2e8f0;
+  border-color: #1e293b;
+  background: #0f2037;
+}
+html[data-theme="dark"] .etis-auth__input > input::placeholder { color: #64748b; }
+html[data-theme="dark"] .etis-auth__input > input:focus {
+  border-color: #60a5fa;
+  background: #0b1424;
+  box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.16);
+}
+html[data-theme="dark"] .etis-auth__input > svg { color: #64748b; }
+
+html[data-theme="dark"] .etis-auth__eye { color: #94a3b8; }
+html[data-theme="dark"] .etis-auth__eye:hover { color: #93c5fd; background: #14284a; }
+
+html[data-theme="dark"] .etis-auth__agree { color: #94a3b8; }
+html[data-theme="dark"] .etis-auth__agree-box {
+  border-color: #334155;
+  background: #0f2037;
+}
+html[data-theme="dark"] .etis-auth__divider::before { background: #1e293b; }
+html[data-theme="dark"] .etis-auth__divider span { background: #0f1a2e; }
+html[data-theme="dark"] .etis-auth__switch { color: #94a3b8; }
+
+html[data-theme="dark"] .etis-auth__error {
+  color: #fecaca;
+  border-color: #7f1d1d;
+  background: rgba(127, 29, 29, 0.28);
+}

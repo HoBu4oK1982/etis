@@ -1,0 +1,91 @@
+/*
+ * Стабильный прайс-блок страницы товара.
+ * Цена занимает отдельную строку, а количество/сравнение/избранное — вторую.
+ * Скрытая строка расчёта сохраняет высоту, поэтому элементы не прыгают.
+ */
+.etis-info__purchase {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  gap: 14px;
+}
+
+.etis-info__purchase > .etis-price {
+  width: 100%;
+  min-width: 0;
+}
+
+.etis-price__calculation {
+  min-height: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-3px);
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
+}
+
+.etis-price__calculation[data-visible="true"] {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.etis-info__purchase-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  min-height: 54px;
+}
+
+.etis-info__purchase-controls .etis-product-qty {
+  flex: 0 0 auto;
+  order: initial;
+}
+
+.etis-info__purchase-controls .etis-info__quick {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 0 auto;
+  flex: 0 0 auto;
+}
+
+@media (max-width: 640px) {
+  .etis-info__purchase {
+    gap: 12px;
+  }
+
+  .etis-info__purchase-controls {
+    gap: 10px;
+    min-height: 50px;
+  }
+
+  .etis-info__purchase-controls .etis-info__quick {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 380px) {
+  .etis-info__purchase-controls {
+    gap: 8px;
+  }
+
+  .etis-info__purchase-controls .etis-product-qty {
+    grid-template-columns: 36px minmax(40px, auto) 36px;
+  }
+
+  .etis-info__purchase-controls .etis-product-qty button {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .etis-price__calculation {
+    transition: none;
+  }
+}

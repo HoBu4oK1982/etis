@@ -1,0 +1,313 @@
+/* ============================================================
+   Юридические страницы: /privacy, /terms
+   Префикс: .etis-legal-*
+   ============================================================ */
+
+/* ---------- Hero ---------- */
+
+.etis-legal-hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 30px 32px;
+  border: 1px solid #e2e8f0;
+  border-radius: 22px;
+  background:
+    radial-gradient(120% 160% at 100% 0%, rgba(37, 99, 235, 0.09), rgba(37, 99, 235, 0) 60%),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+.etis-legal-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(14, 65, 125, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14, 65, 125, 0.045) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: linear-gradient(120deg, #000 0%, transparent 62%);
+  -webkit-mask-image: linear-gradient(120deg, #000 0%, transparent 62%);
+  pointer-events: none;
+}
+
+.etis-legal-hero__copy { position: relative; z-index: 1; max-width: 760px; }
+
+.etis-legal-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #0866cc;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.etis-legal-hero__eyebrow span {
+  width: 26px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #2563eb, rgba(37, 99, 235, 0.15));
+}
+
+.etis-legal-hero h1 {
+  margin: 12px 0 0;
+  color: #07183b;
+  font-size: clamp(24px, 2.4vw, 32px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.035em;
+}
+.etis-legal-hero p {
+  max-width: 720px;
+  margin: 12px 0 0;
+  color: #64748b;
+  font-size: 14.5px;
+  line-height: 1.65;
+}
+
+.etis-legal-hero__meta {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 220px;
+  padding: 16px 18px;
+  border: 1px solid #dbe7f6;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(6px);
+}
+.etis-legal-hero__meta-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #475569;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+.etis-legal-hero__meta-row svg { color: #2563eb; }
+
+/* ---------- Основной текст документа ---------- */
+
+.etis-legal {
+  max-width: 860px;
+  margin: 40px auto 0;
+  padding: 0;
+  color: #334155;
+  font-size: 15px;
+  line-height: 1.75;
+}
+.etis-legal h2 {
+  margin: 40px 0 14px;
+  color: #07183b;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+.etis-legal h2:first-child { margin-top: 0; }
+
+.etis-legal p { margin: 0 0 14px; }
+.etis-legal ul {
+  margin: 0 0 18px;
+  padding: 0;
+  list-style: none;
+}
+.etis-legal ul li {
+  position: relative;
+  padding-left: 22px;
+  margin-top: 8px;
+}
+.etis-legal ul li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 12px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+}
+.etis-legal b, .etis-legal strong { color: #07183b; font-weight: 700; }
+.etis-legal a {
+  color: #0866cc;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.etis-legal a:hover { color: #0b3f9c; }
+
+/* ---------- Контактный блок под текстом ---------- */
+
+.etis-legal-contacts {
+  max-width: 860px;
+  margin: 42px auto 0;
+  padding: 26px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  color: #ffffff;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #063f89 0%, #0758bd 64%, #0a6ad9 100%);
+}
+.etis-legal-contacts h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.etis-legal-contacts p {
+  max-width: 480px;
+  margin: 8px 0 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+.etis-legal-contacts__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.etis-legal-contacts__cta,
+.etis-legal-contacts__mail {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-weight: 700;
+  transition: transform 180ms ease, background 180ms ease;
+}
+.etis-legal-contacts__cta {
+  color: #07183b;
+  background: #ffffff;
+  box-shadow: 0 12px 24px rgba(3, 30, 70, 0.24);
+}
+.etis-legal-contacts__cta:hover { transform: translateY(-1px); }
+.etis-legal-contacts__mail {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+}
+.etis-legal-contacts__mail:hover { background: rgba(255, 255, 255, 0.24); }
+.etis-legal-contacts__link {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.etis-legal-contacts__link:hover { color: #ffffff; }
+
+/* ---------- Реквизиты ---------- */
+
+.etis-legal-org {
+  max-width: 860px;
+  margin: 32px auto 0;
+  padding: 24px 28px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 18px;
+  background: #f8fafc;
+}
+.etis-legal-org h3 {
+  margin: 0 0 14px;
+  color: #07183b;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.etis-legal-org dl {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  row-gap: 8px;
+  column-gap: 16px;
+  margin: 0;
+  font-size: 13px;
+}
+.etis-legal-org dl > div { display: contents; }
+.etis-legal-org dt {
+  color: #64748b;
+  font-weight: 600;
+}
+.etis-legal-org dd {
+  margin: 0;
+  color: #07183b;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.etis-legal-org dd svg {
+  vertical-align: -2px;
+  margin-right: 4px;
+  color: #2563eb;
+}
+
+/* ---------- Адаптив ---------- */
+
+@media (max-width: 1023px) {
+  .etis-legal-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 24px;
+  }
+  .etis-legal-hero__meta { width: 100%; }
+}
+
+@media (max-width: 767px) {
+  .etis-legal { margin-top: 32px; font-size: 14.5px; }
+  .etis-legal h2 { font-size: 18px; margin-top: 32px; }
+
+  .etis-legal-contacts { flex-direction: column; align-items: flex-start; padding: 22px; }
+  .etis-legal-contacts__actions { width: 100%; }
+  .etis-legal-contacts__cta,
+  .etis-legal-contacts__mail { flex: 1 1 100%; justify-content: center; }
+
+  .etis-legal-org { padding: 20px; }
+  .etis-legal-org dl { grid-template-columns: 1fr; row-gap: 12px; }
+  .etis-legal-org dl > div { display: block; }
+  .etis-legal-org dt { margin-bottom: 2px; }
+}
+
+/* ---------- Тёмная тема ---------- */
+
+html[data-theme="dark"] .etis-legal-hero {
+  border-color: #1e293b;
+  background:
+    radial-gradient(120% 160% at 100% 0%, rgba(96, 165, 250, 0.12), rgba(96, 165, 250, 0) 60%),
+    linear-gradient(180deg, #0f1a2e 0%, #0b1424 100%);
+}
+html[data-theme="dark"] .etis-legal-hero::before {
+  background-image:
+    linear-gradient(rgba(148, 197, 253, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 197, 253, 0.05) 1px, transparent 1px);
+}
+html[data-theme="dark"] .etis-legal-hero h1 { color: #e2e8f0; }
+html[data-theme="dark"] .etis-legal-hero p { color: #94a3b8; }
+html[data-theme="dark"] .etis-legal-hero__eyebrow { color: #60a5fa; }
+html[data-theme="dark"] .etis-legal-hero__meta {
+  border-color: #1e293b;
+  background: rgba(15, 26, 46, 0.86);
+}
+html[data-theme="dark"] .etis-legal-hero__meta-row { color: #94a3b8; }
+
+html[data-theme="dark"] .etis-legal { color: #cbd5e1; }
+html[data-theme="dark"] .etis-legal h2 { color: #e2e8f0; }
+html[data-theme="dark"] .etis-legal b,
+html[data-theme="dark"] .etis-legal strong { color: #e2e8f0; }
+html[data-theme="dark"] .etis-legal ul li::before { background: #60a5fa; box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.18); }
+
+html[data-theme="dark"] .etis-legal-org {
+  border-color: #1e293b;
+  background: #0f1a2e;
+}
+html[data-theme="dark"] .etis-legal-org h3 { color: #e2e8f0; }
+html[data-theme="dark"] .etis-legal-org dt { color: #94a3b8; }
+html[data-theme="dark"] .etis-legal-org dd { color: #e2e8f0; }

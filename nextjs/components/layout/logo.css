@@ -1,0 +1,31 @@
+/*
+ * Фирменный логотип ETIS.
+ * В светлой теме сохраняется исходный синий градиент.
+ * В тёмной теме логотипы интерфейсной оболочки — шапка, sticky/menu
+ * и футер — получают светлый градиент из белого в холодный серый.
+ */
+.etis-logo {
+  --etis-logo-gradient-start: #0180cf;
+  --etis-logo-gradient-end: #012a6a;
+  display: block;
+  flex: 0 0 auto;
+  transition: filter 220ms ease, opacity 220ms ease;
+}
+
+html[data-theme="dark"] header .etis-logo,
+html[data-theme="dark"] .sticky-header .etis-logo,
+html[data-theme="dark"] .etis-mega__panel .etis-logo,
+html[data-theme="dark"] .site-footer .etis-logo {
+  --etis-logo-gradient-start: #ffffff;
+  --etis-logo-gradient-end: #cbd5e1;
+  filter: drop-shadow(0 5px 13px rgba(0, 0, 0, 0.24));
+}
+
+/* В карточках товаров, заглушках и transition логотип остаётся фирменным синим. */
+html[data-theme="dark"] .etis-nophoto__logo,
+html[data-theme="dark"] .etis-page-transition .etis-logo,
+html[data-theme="dark"] .etis-preloader .etis-logo {
+  --etis-logo-gradient-start: #0180cf;
+  --etis-logo-gradient-end: #012a6a;
+  filter: none;
+}

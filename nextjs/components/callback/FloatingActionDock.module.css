@@ -1,0 +1,496 @@
+.dock {
+  position: fixed;
+  z-index: 7950;
+  inset: 0;
+  pointer-events: none;
+}
+
+.scrollButton,
+.contactToggle,
+.actionButton {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- Кнопка наверх с водяным прогрессом ---------- */
+
+.scrollButton {
+  --scroll-progress: 0%;
+  position: absolute;
+  left: max(20px, env(safe-area-inset-left));
+  bottom: max(22px, calc(env(safe-area-inset-bottom) + 16px));
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(34, 112, 203, 0.22);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #075fbd;
+  box-shadow:
+    0 15px 34px rgba(18, 62, 116, 0.18),
+    0 4px 12px rgba(24, 75, 137, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  isolation: isolate;
+  will-change: transform, opacity;
+}
+
+.scrollButton::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  z-index: 3;
+  border: 1px solid rgba(75, 146, 226, 0.16);
+  border-radius: 16px;
+  pointer-events: none;
+}
+
+.water {
+  position: absolute;
+  z-index: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: var(--scroll-progress);
+  min-height: 0;
+  overflow: visible;
+  background: linear-gradient(180deg, #31b8ff 0%, #0a79e4 48%, #0753b7 100%);
+  box-shadow: inset 0 8px 18px rgba(255, 255, 255, 0.14);
+  transition: height 0.12s linear;
+}
+
+.water i,
+.water b {
+  position: absolute;
+  top: -8px;
+  left: -22%;
+  display: block;
+  width: 145%;
+  height: 17px;
+  border-radius: 50%;
+  background: rgba(191, 236, 255, 0.9);
+  animation: waterWave 2.2s linear infinite;
+}
+
+.water b {
+  top: -5px;
+  left: -9%;
+  width: 124%;
+  height: 13px;
+  background: rgba(35, 159, 238, 0.64);
+  animation-duration: 2.9s;
+  animation-direction: reverse;
+}
+
+.scrollIcon {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin-top: -7px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #075fbd;
+  box-shadow: 0 5px 13px rgba(0, 55, 124, 0.13);
+  backdrop-filter: blur(7px);
+}
+
+.progressLabel {
+  position: absolute;
+  z-index: 4;
+  right: 0;
+  bottom: 6px;
+  left: 0;
+  color: #ffffff;
+  font-size: 8px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-align: center;
+  text-shadow:
+    0 1px 2px rgba(0, 34, 84, 0.9),
+    0 0 6px rgba(0, 54, 124, 0.72);
+}
+
+.scrollButton:hover {
+  border-color: rgba(26, 119, 224, 0.36);
+  box-shadow:
+    0 19px 40px rgba(8, 80, 164, 0.23),
+    0 5px 14px rgba(24, 75, 137, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+}
+
+.scrollButton:hover .scrollIcon {
+  transform: translateY(-2px);
+}
+
+/* ---------- Контактный кластер ---------- */
+
+.contactCluster {
+  position: absolute;
+  right: max(20px, env(safe-area-inset-right));
+  bottom: max(22px, calc(env(safe-area-inset-bottom) + 16px));
+  pointer-events: auto;
+}
+
+.contactToggle {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  overflow: visible;
+  border: 1px solid rgba(255, 255, 255, 0.46);
+  border-radius: 21px;
+  background:
+    radial-gradient(circle at 26% 18%, rgba(92, 195, 255, 0.43), transparent 35%),
+    linear-gradient(145deg, #1684eb 0%, #075cc4 52%, #063f91 100%);
+  color: #fff;
+  box-shadow:
+    0 18px 42px rgba(3, 67, 151, 0.31),
+    0 5px 14px rgba(5, 47, 105, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.27);
+  cursor: pointer;
+  isolation: isolate;
+}
+
+.contactToggle::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  z-index: -1;
+  border: 1px solid rgba(177, 224, 255, 0.25);
+  border-radius: 16px;
+}
+
+.contactToggleOpen {
+  background:
+    radial-gradient(circle at 26% 18%, rgba(130, 215, 255, 0.36), transparent 35%),
+    linear-gradient(145deg, #0d6ed8 0%, #064da8 58%, #043678 100%);
+}
+
+.toggleIcon {
+  position: relative;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.13);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+    0 7px 18px rgba(0, 31, 82, 0.19);
+  backdrop-filter: blur(9px);
+}
+
+.togglePulse {
+  position: absolute;
+  inset: 4px;
+  z-index: 0;
+  border: 1px solid rgba(174, 224, 255, 0.62);
+  border-radius: 17px;
+  animation: togglePulse 2.1s ease-out infinite;
+}
+
+.actionMenu {
+  position: absolute;
+  right: 0;
+  bottom: 78px;
+  display: flex;
+  width: max-content;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.actionButton {
+  --action-start: #147ce3;
+  --action-end: #0752b0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 228px;
+  min-height: 58px;
+  gap: 12px;
+  padding: 7px 15px 7px 8px;
+  overflow: visible;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 19px;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(255, 255, 255, 0.2), transparent 32%),
+    linear-gradient(135deg, var(--action-start), var(--action-end));
+  color: #fff;
+  box-shadow:
+    0 15px 35px rgba(2, 49, 112, 0.24),
+    0 4px 11px rgba(4, 43, 98, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: left;
+  transform-origin: 100% 50%;
+  will-change: transform, opacity;
+}
+
+.actionButton::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 15px;
+  pointer-events: none;
+}
+
+.actionCall {
+  --action-start: #167ce4;
+  --action-end: #0751ad;
+}
+
+.actionWhatsapp {
+  --action-start: #1bbd72;
+  --action-end: #0b8a50;
+  box-shadow:
+    0 15px 35px rgba(8, 109, 64, 0.23),
+    0 4px 11px rgba(3, 76, 44, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.actionCallback {
+  --action-start: #275fe1;
+  --action-end: #103b9a;
+}
+
+.actionIcon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 43px;
+  height: 43px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2),
+    0 7px 17px rgba(0, 29, 73, 0.18);
+  backdrop-filter: blur(8px);
+}
+
+.actionIcon > svg {
+  position: relative;
+  z-index: 4;
+}
+
+.actionCopy {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.actionCopy small {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.actionCopy b {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 850;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.actionButton:hover {
+  filter: brightness(1.06);
+}
+
+.actionButton:hover .actionIcon {
+  transform: scale(1.04);
+}
+
+/* ---------- Сферы вокруг кнопок ---------- */
+
+.orbitSystem {
+  position: absolute;
+  inset: -8px;
+  z-index: 2;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.orbitSystemCompact {
+  inset: -5px;
+}
+
+.orbitOne,
+.orbitTwo,
+.orbitThree {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.orbitTwo {
+  inset: 5px;
+}
+
+.orbitThree {
+  inset: 10px;
+}
+
+.orbitSystemCompact .orbitTwo {
+  inset: 4px;
+}
+
+.orbitSystemCompact .orbitThree {
+  inset: 8px;
+}
+
+.orbitOne i,
+.orbitTwo i,
+.orbitThree i {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  display: block;
+  width: 5px;
+  height: 5px;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.95);
+}
+
+.orbitTwo i {
+  width: 4px;
+  height: 4px;
+  background: #8dd9ff;
+  box-shadow: 0 0 9px rgba(141, 217, 255, 0.95);
+}
+
+.orbitThree i {
+  width: 3px;
+  height: 3px;
+  background: #d9f3ff;
+  box-shadow: 0 0 7px rgba(217, 243, 255, 0.92);
+}
+
+@keyframes waterWave {
+  from { transform: translateX(-5%) rotate(0deg); }
+  50% { transform: translateX(5%) rotate(2deg); }
+  to { transform: translateX(-5%) rotate(0deg); }
+}
+
+@keyframes togglePulse {
+  0% { transform: scale(0.92); opacity: 0.62; }
+  75%, 100% { transform: scale(1.2); opacity: 0; }
+}
+
+@media (max-width: 767px) {
+  .scrollButton {
+    left: max(12px, env(safe-area-inset-left));
+    bottom: max(14px, calc(env(safe-area-inset-bottom) + 10px));
+
+    width: 54px;
+    height: 54px;
+    border-radius: 18px;
+  }
+
+  .scrollButton::after {
+    border-radius: 14px;
+  }
+
+  .scrollIcon {
+    width: 29px;
+    height: 29px;
+    margin-top: -6px;
+    border-radius: 10px;
+  }
+
+  .progressLabel {
+    bottom: 5px;
+    font-size: 7px;
+  }
+
+  .contactCluster {
+    right: max(12px, env(safe-area-inset-right));
+    bottom: max(14px, calc(env(safe-area-inset-bottom) + 10px));
+  }
+
+  .contactToggle {
+    width: 58px;
+    height: 58px;
+    border-radius: 19px;
+  }
+
+  .contactToggle::before {
+    border-radius: 14px;
+  }
+
+  .toggleIcon {
+    width: 37px;
+    height: 37px;
+    border-radius: 13px;
+  }
+
+  .actionMenu {
+    bottom: 70px;
+    gap: 8px;
+  }
+
+  .actionButton {
+    width: min(216px, calc(100vw - 30px));
+    min-height: 54px;
+    border-radius: 17px;
+  }
+
+  .actionIcon {
+    width: 40px;
+    height: 40px;
+    border-radius: 13px;
+  }
+
+  .actionCopy b {
+    font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .water i,
+  .water b,
+  .togglePulse {
+    animation: none !important;
+  }
+
+  .scrollIcon,
+  .actionIcon {
+    transition: none !important;
+  }
+}
+
+:global(html[data-theme="dark"]) .scrollButton {
+  border-color: rgba(105, 169, 239, 0.23);
+  background: rgba(12, 25, 45, 0.94);
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+:global(html[data-theme="dark"]) .progressLabel {
+  color: #ffffff;
+}

@@ -1,0 +1,634 @@
+/* ============================================================
+   ДОСТАВКА И ОПЛАТА (/delivery)
+   Статическая страница условий. Префикс классов: .etis-del-*
+   ============================================================ */
+
+/* ---------- Шапка ---------- */
+
+.etis-del-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 32px 34px;
+  border: 1px solid #e2e8f0;
+  border-radius: 22px;
+  background:
+    radial-gradient(120% 160% at 100% 0%, rgba(37, 99, 235, 0.1), rgba(37, 99, 235, 0) 60%),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+.etis-del-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(14, 65, 125, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14, 65, 125, 0.045) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: linear-gradient(120deg, #000 0%, transparent 62%);
+  -webkit-mask-image: linear-gradient(120deg, #000 0%, transparent 62%);
+  pointer-events: none;
+}
+
+.etis-del-hero__copy {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+}
+@media (min-width: 1024px) {
+  /* На широких экранах текст не должен вылезать под правое фото */
+  .etis-del-hero__copy { max-width: 56%; }
+}
+
+/*
+ * Правая иллюстрация — та же техника, что у подписки в футере:
+ * абсолютно позиционирована в правом верхнем углу, клипается
+ * по диагонали, поверх идёт лёгкая холодная подсветка, чтобы
+ * фото сплавлялось с фоном hero, а не «наклеивалось» на него.
+ */
+.etis-del-hero__media {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  width: 46%;
+  height: 100%;
+  background: url("/images/delivery/delivery-hero.jpg") center/cover no-repeat;
+  clip-path: polygon(22% 0, 100% 0, 100% 100%, 0 100%);
+}
+/* Мягкий стык с фоном hero */
+.etis-del-hero__media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(248, 251, 255, 0.9) 0%,
+      rgba(248, 251, 255, 0.55) 12%,
+      rgba(248, 251, 255, 0.15) 26%,
+      rgba(248, 251, 255, 0) 44%
+    ),
+    linear-gradient(90deg, rgba(248, 251, 255, 0.35), rgba(248, 251, 255, 0) 38%);
+}
+
+.etis-del-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #0866cc;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.etis-del-hero__eyebrow span {
+  width: 26px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #2563eb, rgba(37, 99, 235, 0.15));
+}
+
+.etis-del-hero h1 {
+  margin: 12px 0 0;
+  color: #07183b;
+  font-size: clamp(26px, 2.6vw, 34px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+}
+.etis-del-hero p {
+  margin: 12px 0 0;
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.etis-del-hero__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+.etis-del-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  color: #475569;
+  border: 1px solid #dbe7f6;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+.etis-del-chip svg { color: #2563eb; }
+
+/* ---------- Секции ---------- */
+
+.etis-del-section { margin-top: 44px; }
+
+.etis-del-section__head { margin-bottom: 20px; }
+.etis-del-section__head h2 {
+  margin: 0;
+  color: #07183b;
+  font-size: clamp(21px, 2vw, 26px);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+.etis-del-section__head p {
+  max-width: 660px;
+  margin: 10px 0 0;
+  color: #64748b;
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+/* ---------- Карточки способов доставки ---------- */
+
+.etis-del-grid { display: grid; gap: 16px; }
+.etis-del-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.etis-del-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.etis-del-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 22px;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  background: #fff;
+  transition: transform 240ms ease, box-shadow 240ms ease, border-color 240ms ease;
+}
+.etis-del-card::after {
+  content: "";
+  position: absolute;
+  right: -70px;
+  top: -80px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.09), rgba(37, 99, 235, 0));
+  pointer-events: none;
+  transition: transform 320ms ease;
+}
+.etis-del-card:hover {
+  transform: translateY(-5px);
+  border-color: #bad3ef;
+  box-shadow: 0 22px 46px rgba(14, 65, 125, 0.13);
+}
+.etis-del-card:hover::after { transform: scale(1.2); }
+
+.etis-del-card__icon {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  color: #0b52c0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #eaf3ff, #dbe9fd);
+}
+
+.etis-del-card h3 {
+  position: relative;
+  z-index: 1;
+  margin: 16px 0 0;
+  color: #07183b;
+  font-size: 16.5px;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+.etis-del-card__text {
+  position: relative;
+  z-index: 1;
+  margin: 9px 0 0;
+  color: #64748b;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+.etis-del-card__points {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.etis-del-card__points li {
+  position: relative;
+  padding-left: 18px;
+  margin-top: 8px;
+  color: #475569;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.etis-del-card__points li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 7px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #93c5fd;
+}
+
+.etis-del-card__foot {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px dashed #e6edf6;
+}
+.etis-del-card__price {
+  padding: 5px 11px;
+  color: #0866cc;
+  border-radius: 999px;
+  background: #eaf3ff;
+  font-size: 11.5px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.etis-del-card__term { color: #94a3b8; font-size: 11.5px; font-weight: 600; }
+
+.etis-del-note {
+  margin: 16px 0 0;
+  padding: 13px 16px;
+  color: #64748b;
+  border: 1px dashed #cbd5e1;
+  border-radius: 14px;
+  background: #f8fafc;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* ---------- Шаги заказа ---------- */
+
+.etis-del-steps {
+  position: relative;
+  margin: 0;
+  padding: 0 0 0 4px;
+  list-style: none;
+}
+.etis-del-steps::before {
+  content: "";
+  position: absolute;
+  left: 22px;
+  top: 14px;
+  bottom: 14px;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #dbe9fd, #eaf3ff);
+}
+
+.etis-del-step {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 0 0 22px;
+}
+.etis-del-step:last-child { padding-bottom: 0; }
+
+.etis-del-step__num {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  color: #fff;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2563eb, #0b52c0);
+  box-shadow: 0 10px 22px rgba(5, 91, 199, 0.24);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.etis-del-step__body { padding-top: 4px; }
+.etis-del-step__body h3 {
+  margin: 0;
+  color: #07183b;
+  font-size: 15.5px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.etis-del-step__body p {
+  max-width: 720px;
+  margin: 7px 0 0;
+  color: #64748b;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+/* ---------- Оплата ---------- */
+
+.etis-del-pay {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  background: #fff;
+  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+}
+.etis-del-pay:hover {
+  transform: translateY(-3px);
+  border-color: #bad3ef;
+  box-shadow: 0 16px 34px rgba(14, 65, 125, 0.1);
+}
+.etis-del-pay__icon {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  color: #0b52c0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #eaf3ff, #dbe9fd);
+}
+.etis-del-pay__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.etis-del-pay__head h3 {
+  margin: 0;
+  color: #07183b;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.etis-del-pay__head span {
+  padding: 3px 9px;
+  color: #0866cc;
+  border-radius: 999px;
+  background: #eaf3ff;
+  font-size: 10.5px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.etis-del-pay p {
+  margin: 8px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+/* ---------- Важно знать ---------- */
+
+.etis-del-notes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.etis-del-notes li {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 16px 18px;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background: #f8fbff;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+.etis-del-notes svg { flex: 0 0 auto; margin-top: 1px; color: #2563eb; }
+
+/* ---------- CTA ---------- */
+
+.etis-del-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  margin-top: 44px;
+  padding: 28px 32px;
+  color: #fff;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #063f89 0%, #0758bd 64%, #0a6ad9 100%);
+}
+.etis-del-cta__copy h2 {
+  margin: 0;
+  font-size: clamp(20px, 2vw, 25px);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+.etis-del-cta__copy p {
+  max-width: 620px;
+  margin: 10px 0 0;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.etis-del-cta__actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.etis-del-cta__phone,
+.etis-del-cta__mail,
+.etis-del-cta__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 46px;
+  padding: 0 18px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
+}
+.etis-del-cta__phone {
+  color: #07183b;
+  background: #fff;
+  box-shadow: 0 12px 26px rgba(3, 30, 70, 0.24);
+}
+.etis-del-cta__phone:hover { transform: translateY(-2px); }
+.etis-del-cta__mail {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+}
+.etis-del-cta__mail:hover { background: rgba(255, 255, 255, 0.22); }
+.etis-del-cta__link {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.etis-del-cta__link:hover { color: #fff; }
+
+/* ---------- FAQ ---------- */
+
+.etis-del-faq {
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  background: #fff;
+}
+.etis-del-faq__item { border-bottom: 1px solid #eef2f7; }
+.etis-del-faq__item:last-child { border-bottom: 0; }
+
+.etis-del-faq__btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 17px 20px;
+  color: #07183b;
+  background: transparent;
+  font-size: 14.5px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition: color 180ms ease, background 180ms ease;
+}
+.etis-del-faq__btn:hover { color: #0b52c0; background: #f8fbff; }
+.etis-del-faq__btn svg {
+  flex: 0 0 auto;
+  color: #94a3b8;
+  transition: transform 260ms ease, color 180ms ease;
+}
+.etis-del-faq__item.is-open .etis-del-faq__btn { color: #0b52c0; }
+.etis-del-faq__item.is-open .etis-del-faq__btn svg {
+  color: #2563eb;
+  transform: rotate(180deg);
+}
+
+.etis-del-faq__answer {
+  max-width: 900px;
+  margin: 0;
+  padding: 0 20px 18px;
+  color: #64748b;
+  font-size: 13.5px;
+  line-height: 1.65;
+}
+
+/* ============================================================
+   Адаптив
+   ============================================================ */
+
+@media (max-width: 1279px) {
+  .etis-del-grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 1023px) {
+  .etis-del-grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .etis-del-cta { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 1023px) {
+  /* На планшетах и мобильных иллюстрация только мешает — прячем.
+     Копия при этом снова получает полную ширину контейнера. */
+  .etis-del-hero__media { display: none; }
+  .etis-del-hero__copy { max-width: 100%; }
+}
+
+@media (max-width: 767px) {
+  .etis-del-hero { padding: 24px 20px; }
+  .etis-del-section { margin-top: 34px; }
+  .etis-del-grid--4,
+  .etis-del-grid--3,
+  .etis-del-notes { grid-template-columns: minmax(0, 1fr); }
+  .etis-del-cta { padding: 24px 20px; }
+  .etis-del-cta__actions { width: 100%; }
+  .etis-del-cta__phone,
+  .etis-del-cta__mail { flex: 1 1 100%; justify-content: center; }
+  .etis-del-steps::before { left: 18px; }
+  .etis-del-step { gap: 14px; }
+  .etis-del-step__num { width: 34px; height: 34px; font-size: 14px; }
+}
+
+/* ============================================================
+   Тёмная тема
+   ============================================================ */
+
+html[data-theme="dark"] .etis-del-hero {
+  border-color: #1e293b;
+  background:
+    radial-gradient(120% 160% at 100% 0%, rgba(96, 165, 250, 0.12), rgba(96, 165, 250, 0) 60%),
+    linear-gradient(180deg, #0f1a2e 0%, #0b1424 100%);
+}
+html[data-theme="dark"] .etis-del-hero::before {
+  background-image:
+    linear-gradient(rgba(148, 197, 253, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 197, 253, 0.05) 1px, transparent 1px);
+}
+html[data-theme="dark"] .etis-del-hero h1,
+html[data-theme="dark"] .etis-del-section__head h2,
+html[data-theme="dark"] .etis-del-card h3,
+html[data-theme="dark"] .etis-del-step__body h3,
+html[data-theme="dark"] .etis-del-pay__head h3 { color: #e2e8f0; }
+
+html[data-theme="dark"] .etis-del-hero p,
+html[data-theme="dark"] .etis-del-section__head p,
+html[data-theme="dark"] .etis-del-card__text,
+html[data-theme="dark"] .etis-del-step__body p,
+html[data-theme="dark"] .etis-del-pay p,
+html[data-theme="dark"] .etis-del-faq__answer { color: #94a3b8; }
+
+html[data-theme="dark"] .etis-del-hero__eyebrow { color: #60a5fa; }
+html[data-theme="dark"] .etis-del-chip {
+  color: #94a3b8;
+  border-color: #1e293b;
+  background: rgba(15, 26, 46, 0.86);
+}
+
+html[data-theme="dark"] .etis-del-card,
+html[data-theme="dark"] .etis-del-pay,
+html[data-theme="dark"] .etis-del-faq {
+  border-color: #1e293b;
+  background: #0f1a2e;
+}
+html[data-theme="dark"] .etis-del-card:hover,
+html[data-theme="dark"] .etis-del-pay:hover { border-color: #24405f; }
+html[data-theme="dark"] .etis-del-card__foot { border-top-color: #1b2942; }
+html[data-theme="dark"] .etis-del-card__points li { color: #94a3b8; }
+html[data-theme="dark"] .etis-del-card__points li::before { background: #38609b; }
+
+html[data-theme="dark"] .etis-del-card__icon,
+html[data-theme="dark"] .etis-del-pay__icon {
+  color: #93c5fd;
+  background: linear-gradient(135deg, #14284a, #16233a);
+}
+html[data-theme="dark"] .etis-del-card__price,
+html[data-theme="dark"] .etis-del-pay__head span { color: #93c5fd; background: #14284a; }
+
+html[data-theme="dark"] .etis-del-note {
+  color: #94a3b8;
+  border-color: #1e293b;
+  background: #0f1a2e;
+}
+html[data-theme="dark"] .etis-del-steps::before {
+  background: linear-gradient(180deg, #1e3a63, #16233a);
+}
+html[data-theme="dark"] .etis-del-notes li {
+  color: #94a3b8;
+  border-color: #1e293b;
+  background: #0f1a2e;
+}
+
+html[data-theme="dark"] .etis-del-faq__item { border-bottom-color: #1b2942; }
+html[data-theme="dark"] .etis-del-faq__btn { color: #e2e8f0; }
+html[data-theme="dark"] .etis-del-faq__btn:hover { color: #93c5fd; background: #101c31; }
+html[data-theme="dark"] .etis-del-faq__item.is-open .etis-del-faq__btn { color: #93c5fd; }

@@ -1,0 +1,39 @@
+.etis-animated-value {
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: max-content;
+  grid-template-rows: 1em;
+  align-items: center;
+  overflow: hidden;
+  min-width: max-content;
+  height: 1em;
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  line-height: 1;
+  vertical-align: -0.04em;
+  font-variant-numeric: tabular-nums lining-nums;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.etis-animated-value__layer {
+  grid-area: 1 / 1;
+  display: block;
+  min-width: max-content;
+  white-space: nowrap;
+  line-height: 1;
+  will-change: transform, opacity, filter;
+}
+
+.etis-animated-number {
+  text-align: center;
+  justify-items: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .etis-animated-value,
+  .etis-animated-value__layer {
+    will-change: auto;
+  }
+}

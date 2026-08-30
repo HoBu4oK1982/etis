@@ -1,0 +1,75 @@
+/* ============================================================
+   Хлебные крошки
+   Все цвета — через семантические переменные темы, поэтому
+   переключение light/dark работает без отдельных dark:-классов.
+   ============================================================ */
+
+.etis-crumbs {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  color: var(--text-muted);
+  font-size: 14px;
+
+  /* Плавная прокрутка пальцем на тач-устройствах + инерция */
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+.etis-crumbs::-webkit-scrollbar { display: none; }
+
+.etis-crumbs__item {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.etis-crumbs__sep {
+  flex-shrink: 0;
+  color: var(--border);
+}
+
+.etis-crumbs__home {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  box-shadow: 0 7px 20px rgba(20, 101, 214, 0.08);
+  transition:
+    transform 200ms ease,
+    background-color 200ms ease,
+    color 200ms ease,
+    border-color 200ms ease;
+}
+.etis-crumbs__home:hover {
+  color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.etis-crumbs__link {
+  flex-shrink: 0;
+  white-space: nowrap;
+  color: var(--text-muted);
+  transition: color 160ms ease;
+}
+.etis-crumbs__link:hover { color: var(--accent); }
+
+.etis-crumbs__current {
+  flex-shrink: 0;
+  white-space: nowrap;
+  color: var(--text);
+  font-weight: 600;
+}

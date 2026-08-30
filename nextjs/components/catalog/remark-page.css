@@ -1,0 +1,193 @@
+/* ============================================================
+   Страницы подборок: /hits, /sales, /news
+   Hero берёт цвет подборки через CSS-переменные --remark-*.
+   Сетка, фильтры, тулбар и пагинация — из catalog.css.
+   ============================================================ */
+
+.etis-remark-hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 26px 30px;
+  margin-bottom: 26px;
+  border: 1px solid #e2e8f0;
+  border-radius: 22px;
+  background:
+    radial-gradient(120% 160% at 100% 0%, color-mix(in srgb, var(--remark-from) 14%, transparent), transparent 60%),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+/* Инженерная сетка, тонально уходящая под правый край */
+.etis-remark-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(14, 65, 125, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14, 65, 125, 0.05) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: linear-gradient(120deg, #000 0%, transparent 62%);
+  -webkit-mask-image: linear-gradient(120deg, #000 0%, transparent 62%);
+  pointer-events: none;
+}
+/* Мягкий цветной блик — акцент подборки */
+.etis-remark-hero::after {
+  content: "";
+  position: absolute;
+  right: -100px;
+  top: -120px;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--remark-from), transparent 70%);
+  opacity: 0.14;
+  pointer-events: none;
+}
+
+.etis-remark-hero__icon {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 72px;
+  height: 72px;
+  color: #fff;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--remark-from), var(--remark-to));
+  box-shadow: 0 14px 28px color-mix(in srgb, var(--remark-from) 40%, transparent);
+}
+
+.etis-remark-hero__copy { position: relative; z-index: 1; min-width: 0; flex: 1 1 auto; }
+
+.etis-remark-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--remark-text);
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.etis-remark-hero__eyebrow span {
+  width: 26px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--remark-from), transparent);
+}
+
+.etis-remark-hero h1 {
+  margin: 10px 0 0;
+  color: #07183b;
+  font-size: clamp(24px, 2.4vw, 32px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+}
+.etis-remark-hero p {
+  max-width: 700px;
+  margin: 10px 0 0;
+  color: #64748b;
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+/* Счётчик — цветная плашка в тон подборки */
+.etis-remark-hero__stat {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  min-width: 128px;
+  padding: 14px 18px;
+  color: var(--remark-text);
+  border-radius: 16px;
+  background: var(--remark-soft);
+  border: 1px solid color-mix(in srgb, var(--remark-from) 24%, transparent);
+  text-align: center;
+}
+.etis-remark-hero__stat b {
+  display: block;
+  color: var(--remark-text);
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.etis-remark-hero__stat span {
+  display: block;
+  margin-top: 6px;
+  color: color-mix(in srgb, var(--remark-text) 78%, transparent);
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+/* Скелет hero — для loading.tsx */
+.etis-remark-hero-skeleton {
+  height: 148px;
+  margin-bottom: 26px;
+  border-radius: 22px;
+  background: linear-gradient(90deg, #f1f5f9 25%, #e8eef6 37%, #f1f5f9 63%);
+  background-size: 400% 100%;
+  animation: etis-cat-shimmer 1.4s ease infinite;
+}
+
+/* ============================================================
+   Адаптив
+   ============================================================ */
+
+@media (max-width: 1023px) {
+  .etis-remark-hero {
+    flex-wrap: wrap;
+    gap: 18px;
+    padding: 22px 24px;
+  }
+  .etis-remark-hero__stat { flex: 1 1 100%; }
+}
+
+@media (max-width: 767px) {
+  .etis-remark-hero { padding: 20px; gap: 14px; }
+  .etis-remark-hero__icon { width: 56px; height: 56px; border-radius: 16px; }
+  .etis-remark-hero__icon svg { width: 24px; height: 24px; }
+  .etis-remark-hero__stat { padding: 12px 14px; }
+  .etis-remark-hero__stat b { font-size: 20px; }
+}
+
+/* ============================================================
+   Тёмная тема
+   ============================================================ */
+
+html[data-theme="dark"] .etis-remark-hero {
+  border-color: #1e293b;
+  background:
+    radial-gradient(120% 160% at 100% 0%, color-mix(in srgb, var(--remark-from) 22%, transparent), transparent 60%),
+    linear-gradient(180deg, #0f1a2e 0%, #0b1424 100%);
+}
+html[data-theme="dark"] .etis-remark-hero::before {
+  background-image:
+    linear-gradient(rgba(148, 197, 253, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 197, 253, 0.05) 1px, transparent 1px);
+}
+html[data-theme="dark"] .etis-remark-hero h1 { color: #e2e8f0; }
+html[data-theme="dark"] .etis-remark-hero p { color: #94a3b8; }
+
+html[data-theme="dark"] .etis-remark-hero__stat {
+  background: color-mix(in srgb, var(--remark-from) 14%, #0f1a2e);
+  border-color: color-mix(in srgb, var(--remark-from) 30%, #1e293b);
+  /* В тёмной теме тёмно-красные и коричнево-оранжевые оттенки читаются
+     плохо на тёмном фоне — сдвигаем в сторону светлого */
+  color: color-mix(in srgb, var(--remark-from) 60%, #ffffff);
+}
+html[data-theme="dark"] .etis-remark-hero__stat b {
+  color: color-mix(in srgb, var(--remark-from) 55%, #ffffff);
+}
+html[data-theme="dark"] .etis-remark-hero__eyebrow {
+  color: color-mix(in srgb, var(--remark-from) 55%, #ffffff);
+}
+
+html[data-theme="dark"] .etis-remark-hero-skeleton {
+  background: linear-gradient(90deg, #101c31 25%, #16233a 37%, #101c31 63%);
+  background-size: 400% 100%;
+}

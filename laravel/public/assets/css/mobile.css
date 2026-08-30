@@ -1,0 +1,13 @@
+/* CSS Document */
+@media (max-width: 1280px) {
+    .remark__pages__content{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 1024px) {
+    .remark__pages__content{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 768px) {
+    .remark__pages__content{ grid-template-columns: 1fr; }
+}
+@media (max-width: 400px) {
+    .remark__pages__content{ grid-template-columns: 1fr; }
+}

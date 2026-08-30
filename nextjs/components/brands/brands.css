@@ -1,0 +1,763 @@
+/* ============================================================
+   БРЕНДЫ (/brands и /brands/{slug})
+   Витрина брендов + шапка и сайдбар страницы бренда.
+   Префикс классов: .etis-brands* / .etis-brand-*
+   Сетка товаров, фильтры и пагинация переиспользуются
+   из catalog.css (.etis-cat-*) — здесь только своё.
+   ============================================================ */
+
+/* ---------- Шапка витрины ---------- */
+
+.etis-brands-hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 30px 32px;
+  border: 1px solid #e2e8f0;
+  border-radius: 22px;
+  background:
+    radial-gradient(120% 160% at 100% 0%, rgba(37, 99, 235, 0.1), rgba(37, 99, 235, 0) 60%),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+/* Тонкая «инженерная» сетка в фоне */
+.etis-brands-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(14, 65, 125, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14, 65, 125, 0.045) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: linear-gradient(120deg, #000 0%, transparent 62%);
+  -webkit-mask-image: linear-gradient(120deg, #000 0%, transparent 62%);
+  pointer-events: none;
+}
+
+.etis-brands-hero__copy {
+  position: relative;
+  z-index: 1;
+  max-width: 620px;
+}
+.etis-brands-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #0866cc;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.etis-brands-hero__eyebrow span {
+  width: 26px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #2563eb, rgba(37, 99, 235, 0.15));
+}
+.etis-brands-hero h1 {
+  margin: 12px 0 0;
+  color: #07183b;
+  font-size: clamp(26px, 2.6vw, 34px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+}
+.etis-brands-hero p {
+  margin: 12px 0 0;
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.etis-brands-hero__stats {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 10px;
+}
+.etis-brands-hero__stats > div {
+  min-width: 118px;
+  padding: 14px 16px;
+  border: 1px solid #dbe7f6;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(4px);
+}
+.etis-brands-hero__stats b {
+  display: block;
+  color: #0b3f9c;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.etis-brands-hero__stats span {
+  display: block;
+  margin-top: 6px;
+  color: #64748b;
+  font-size: 11.5px;
+  line-height: 1.35;
+}
+
+/* ---------- Панель управления витриной ---------- */
+
+.etis-brands { margin-top: 26px; }
+
+.etis-brands__controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.etis-brands__search {
+  position: relative;
+  flex: 1 1 320px;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+.etis-brands__search svg:first-child {
+  position: absolute;
+  left: 16px;
+  color: #94a3b8;
+  pointer-events: none;
+}
+.etis-brands__search input {
+  width: 100%;
+  height: 48px;
+  padding: 0 44px 0 44px;
+  color: #07183b;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  background: #fff;
+  font-size: 14.5px;
+  outline: none;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+.etis-brands__search input::placeholder { color: #a5b4c8; }
+.etis-brands__search input:focus {
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+.etis-brands__search button {
+  position: absolute;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  color: #64748b;
+  border-radius: 50%;
+  background: #eef3f9;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease;
+}
+.etis-brands__search button:hover { color: #0f172a; background: #dfe8f3; }
+
+/* Переключатель «только с товарами» */
+.etis-brands__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #475569;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+}
+.etis-brands__toggle input { position: absolute; opacity: 0; pointer-events: none; }
+.etis-brands__toggle-track {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  border-radius: 999px;
+  background: #dbe4ef;
+  transition: background 220ms ease;
+}
+.etis-brands__toggle-dot {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(15, 40, 80, 0.22);
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.etis-brands__toggle input:checked + .etis-brands__toggle-track {
+  background: linear-gradient(135deg, #2563eb, #0b52c0);
+}
+.etis-brands__toggle input:checked + .etis-brands__toggle-track .etis-brands__toggle-dot {
+  transform: translateX(18px);
+}
+
+/* ---------- Алфавит ---------- */
+
+.etis-brands__alphabet {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  margin-top: 16px;
+  padding-bottom: 2px;
+}
+.etis-brands__letter {
+  flex: 0 0 auto;
+  min-width: 36px;
+  height: 34px;
+  padding: 0 10px;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 160ms ease, border-color 160ms ease, background 160ms ease,
+    transform 160ms ease;
+}
+.etis-brands__letter:hover {
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+  background: #f6faff;
+  transform: translateY(-1px);
+}
+.etis-brands__letter.is-active {
+  color: #fff;
+  border-color: transparent;
+  background: linear-gradient(135deg, #2563eb, #0b52c0);
+  box-shadow: 0 8px 18px rgba(5, 91, 199, 0.26);
+}
+
+.etis-brands__meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+  color: #64748b;
+  font-size: 13px;
+}
+.etis-brands__meta b { color: #07183b; font-weight: 800; }
+.etis-brands__meta button {
+  color: #0866cc;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.etis-brands__meta button:hover { text-decoration: underline; }
+
+/* ---------- Сетка брендов ---------- */
+
+.etis-brands__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.etis-brand-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 250px;
+  padding: 18px;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  background: #fff;
+  transition: transform 240ms ease, box-shadow 240ms ease, border-color 240ms ease;
+}
+.etis-brand-card:hover {
+  transform: translateY(-5px);
+  border-color: #bad3ef;
+  box-shadow: 0 22px 46px rgba(14, 65, 125, 0.14);
+}
+.etis-brand-card.is-empty { opacity: 0.72; }
+
+.etis-brand-card__glow {
+  position: absolute;
+  right: -70px;
+  top: -80px;
+  z-index: 0;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.12), rgba(37, 99, 235, 0));
+  pointer-events: none;
+  transition: transform 340ms ease;
+}
+.etis-brand-card:hover .etis-brand-card__glow { transform: scale(1.25); }
+
+/* Подложка логотипа — всегда светлая: фирменные лого рисуют под белое */
+.etis-brand-card__logo {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  height: 104px;
+  border: 1px solid #eef2f7;
+  border-radius: 14px;
+  background: #fff;
+}
+.etis-brand-logo__img {
+  object-fit: contain;
+  padding: 16px;
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.etis-brand-card:hover .etis-brand-logo__img { transform: scale(1.06); }
+
+/* Фолбэк без логотипа — монограмма */
+.etis-brand-mono {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  color: #0b52c0;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #eaf3ff, #dbe9fd);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.etis-brand-mono--lg {
+  width: 96px;
+  height: 96px;
+  border-radius: 22px;
+  font-size: 32px;
+}
+
+.etis-brand-card__body {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  margin-top: 14px;
+}
+.etis-brand-card__title {
+  display: block;
+  color: #07183b;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  transition: color 180ms ease;
+}
+.etis-brand-card:hover .etis-brand-card__title { color: #0b52c0; }
+.etis-brand-card__desc {
+  display: -webkit-box;
+  overflow: hidden;
+  margin-top: 7px;
+  color: #64748b;
+  font-size: 12.5px;
+  line-height: 1.5;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.etis-brand-card__foot {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 13px;
+  border-top: 1px dashed #e6edf6;
+}
+.etis-brand-card__count {
+  padding: 5px 11px;
+  color: #0866cc;
+  border-radius: 999px;
+  background: #eaf3ff;
+  font-size: 11.5px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.etis-brand-card.is-empty .etis-brand-card__count { color: #64748b; background: #f1f5f9; }
+.etis-brand-card__arrow {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  color: #64748b;
+  border-radius: 50%;
+  background: #f1f5f9;
+  transition: color 200ms ease, background 200ms ease, transform 200ms ease;
+}
+.etis-brand-card:hover .etis-brand-card__arrow {
+  color: #fff;
+  background: linear-gradient(135deg, #2563eb, #0b52c0);
+  transform: translate(2px, -2px);
+}
+
+/* Пустой результат поиска по брендам */
+.etis-brands__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 18px;
+  padding: 54px 24px;
+  text-align: center;
+  border: 1px dashed #cbd5e1;
+  border-radius: 20px;
+  background: #f8fafc;
+}
+.etis-brands__empty h3 { margin: 0; color: #07183b; font-size: 19px; font-weight: 800; }
+.etis-brands__empty p {
+  max-width: 430px;
+  margin: 10px 0 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.etis-brands__empty button {
+  margin-top: 18px;
+  padding: 11px 20px;
+  color: #fff;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2563eb, #0b52c0);
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+.etis-brands__empty button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(5, 91, 199, 0.26);
+}
+
+/* Скелет карточки */
+.etis-brands__skeleton {
+  height: 250px;
+  border-radius: 20px;
+  background: linear-gradient(90deg, #f1f5f9 25%, #e8eef6 37%, #f1f5f9 63%);
+  background-size: 400% 100%;
+  animation: etis-cat-shimmer 1.4s ease infinite;
+}
+
+/* ============================================================
+   Страница бренда — шапка
+   ============================================================ */
+
+.etis-brand-hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 26px 30px;
+  border: 1px solid #e2e8f0;
+  border-radius: 22px;
+  background:
+    radial-gradient(110% 150% at 0% 0%, rgba(37, 99, 235, 0.09), rgba(37, 99, 235, 0) 58%),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.etis-brand-hero__logo {
+  position: relative;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 190px;
+  height: 128px;
+  border: 1px solid #eef2f7;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(14, 65, 125, 0.08);
+}
+
+.etis-brand-hero__body { min-width: 0; flex: 1 1 auto; }
+
+.etis-brand-hero__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+  font-size: 12.5px;
+  font-weight: 700;
+  transition: color 160ms ease, gap 160ms ease;
+}
+.etis-brand-hero__back:hover { color: #0b52c0; gap: 9px; }
+
+.etis-brand-hero__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0 0;
+  color: #07183b;
+  font-size: clamp(24px, 2.4vw, 32px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+.etis-brand-hero__verified {
+  display: grid;
+  place-items: center;
+  color: #2563eb;
+}
+
+.etis-brand-hero__text {
+  display: -webkit-box;
+  overflow: hidden;
+  max-width: 720px;
+  margin: 10px 0 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.etis-brand-hero__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+.etis-brand-hero__stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  color: #475569;
+  border: 1px solid #dbe7f6;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  font-size: 12.5px;
+}
+.etis-brand-hero__stat svg { color: #2563eb; }
+.etis-brand-hero__stat b { color: #07183b; font-size: 13.5px; font-weight: 800; }
+
+/* ============================================================
+   Страница бренда — сайдбар
+   ============================================================ */
+
+.etis-brand-filters { overflow: hidden; }
+
+.etis-brand-side {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #eef2f7;
+  background: linear-gradient(180deg, #f8fbff, #ffffff);
+}
+.etis-brand-side__logo {
+  position: relative;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 46px;
+  border: 1px solid #eef2f7;
+  border-radius: 10px;
+  background: #fff;
+}
+.etis-brand-side__logo .etis-brand-logo__img { padding: 6px; }
+.etis-brand-side__logo .etis-brand-mono {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+.etis-brand-side__meta { min-width: 0; }
+.etis-brand-side__meta strong {
+  display: block;
+  overflow: hidden;
+  color: #07183b;
+  font-size: 14px;
+  font-weight: 800;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.etis-brand-side__meta span {
+  display: block;
+  margin-top: 3px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+/* Поиск внутри бренда */
+.etis-brand-qsearch {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.etis-brand-qsearch svg:first-child {
+  position: absolute;
+  left: 12px;
+  color: #94a3b8;
+  pointer-events: none;
+}
+.etis-brand-qsearch input {
+  width: 100%;
+  height: 38px;
+  padding: 0 34px 0 34px;
+  color: #07183b;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f8fafc;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 180ms ease, background 180ms ease;
+}
+.etis-brand-qsearch input:focus { border-color: #93c5fd; background: #fff; }
+.etis-brand-qsearch button {
+  position: absolute;
+  right: 9px;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  color: #64748b;
+  border-radius: 50%;
+  background: #e9eff7;
+  cursor: pointer;
+}
+.etis-brand-qsearch button:hover { color: #0f172a; background: #dbe5f1; }
+
+/* Счётчик в чипах подборок */
+.etis-brand-chip__num {
+  margin-left: 2px;
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 800;
+}
+.etis-cat-chip.is-active .etis-brand-chip__num { color: rgba(255, 255, 255, 0.75); }
+
+/* ============================================================
+   Адаптив
+   ============================================================ */
+
+@media (max-width: 1279px) {
+  .etis-brands__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 1023px) {
+  .etis-brands-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 22px;
+    padding: 24px;
+  }
+  .etis-brands-hero__stats { width: 100%; }
+  .etis-brands-hero__stats > div { flex: 1 1 0; min-width: 0; }
+
+  .etis-brand-hero { gap: 20px; padding: 20px; }
+  .etis-brand-hero__logo { width: 140px; height: 100px; }
+}
+
+@media (max-width: 767px) {
+  .etis-brands__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .etis-brand-card { min-height: 218px; padding: 14px; }
+  .etis-brand-card__logo { height: 82px; }
+  .etis-brand-card__desc { display: none; }
+
+  .etis-brands-hero__stats { flex-wrap: wrap; }
+  .etis-brands-hero__stats > div { flex: 1 1 45%; }
+
+  .etis-brand-hero { flex-direction: column; align-items: flex-start; }
+  .etis-brand-hero__logo { width: 120px; height: 86px; }
+  .etis-brand-hero__text { -webkit-line-clamp: 3; }
+}
+
+@media (max-width: 479px) {
+  .etis-brands__controls { flex-direction: column; align-items: stretch; }
+  .etis-brands__toggle { justify-content: flex-start; }
+}
+
+/* ============================================================
+   Тёмная тема
+   ============================================================ */
+
+html[data-theme="dark"] .etis-brands-hero,
+html[data-theme="dark"] .etis-brand-hero {
+  border-color: #1e293b;
+  background:
+    radial-gradient(120% 160% at 100% 0%, rgba(96, 165, 250, 0.12), rgba(96, 165, 250, 0) 60%),
+    linear-gradient(180deg, #0f1a2e 0%, #0b1424 100%);
+}
+html[data-theme="dark"] .etis-brands-hero::before {
+  background-image:
+    linear-gradient(rgba(148, 197, 253, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 197, 253, 0.05) 1px, transparent 1px);
+}
+html[data-theme="dark"] .etis-brands-hero h1,
+html[data-theme="dark"] .etis-brand-hero__title { color: #e2e8f0; }
+html[data-theme="dark"] .etis-brands-hero p,
+html[data-theme="dark"] .etis-brand-hero__text { color: #94a3b8; }
+html[data-theme="dark"] .etis-brands-hero__eyebrow { color: #60a5fa; }
+html[data-theme="dark"] .etis-brands-hero__stats > div {
+  border-color: #1e293b;
+  background: rgba(15, 26, 46, 0.86);
+}
+html[data-theme="dark"] .etis-brands-hero__stats b { color: #93c5fd; }
+
+html[data-theme="dark"] .etis-brands__search input,
+html[data-theme="dark"] .etis-brands__letter {
+  color: #e2e8f0;
+  border-color: #1e293b;
+  background: #0f1a2e;
+}
+html[data-theme="dark"] .etis-brands__search button,
+html[data-theme="dark"] .etis-brand-qsearch button { color: #94a3b8; background: #16233a; }
+html[data-theme="dark"] .etis-brands__toggle { color: #94a3b8; }
+html[data-theme="dark"] .etis-brands__toggle-track { background: #1e293b; }
+html[data-theme="dark"] .etis-brands__meta b { color: #e2e8f0; }
+
+html[data-theme="dark"] .etis-brand-card {
+  border-color: #1e293b;
+  background: #0f1a2e;
+}
+html[data-theme="dark"] .etis-brand-card:hover { border-color: #24405f; }
+html[data-theme="dark"] .etis-brand-card__title { color: #e2e8f0; }
+html[data-theme="dark"] .etis-brand-card__desc { color: #94a3b8; }
+html[data-theme="dark"] .etis-brand-card__foot { border-top-color: #1b2942; }
+html[data-theme="dark"] .etis-brand-card__arrow { color: #94a3b8; background: #16233a; }
+html[data-theme="dark"] .etis-brand-card__count { color: #93c5fd; background: #14284a; }
+html[data-theme="dark"] .etis-brand-card.is-empty .etis-brand-card__count {
+  color: #94a3b8;
+  background: #16233a;
+}
+
+html[data-theme="dark"] .etis-brands__empty {
+  border-color: #1e293b;
+  background: #0f1a2e;
+}
+html[data-theme="dark"] .etis-brands__empty h3 { color: #e2e8f0; }
+html[data-theme="dark"] .etis-brands__skeleton {
+  background: linear-gradient(90deg, #101c31 25%, #16233a 37%, #101c31 63%);
+  background-size: 400% 100%;
+}
+
+html[data-theme="dark"] .etis-brand-hero__logo,
+html[data-theme="dark"] .etis-brand-side__logo,
+html[data-theme="dark"] .etis-brand-card__logo {
+  /* Подложка остаётся светлой: логотипы производителей рисуют под белое */
+  border-color: #e8eef6;
+  background: #fff;
+}
+html[data-theme="dark"] .etis-brand-hero__stat {
+  color: #94a3b8;
+  border-color: #1e293b;
+  background: rgba(15, 26, 46, 0.86);
+}
+html[data-theme="dark"] .etis-brand-hero__stat b { color: #e2e8f0; }
+html[data-theme="dark"] .etis-brand-hero__back:hover { color: #93c5fd; }
+
+html[data-theme="dark"] .etis-brand-side {
+  border-bottom-color: #1b2942;
+  background: linear-gradient(180deg, #101c31, #0f1a2e);
+}
+html[data-theme="dark"] .etis-brand-side__meta strong { color: #e2e8f0; }
+html[data-theme="dark"] .etis-brand-qsearch input {
+  color: #e2e8f0;
+  border-color: #1e293b;
+  background: #0b1424;
+}

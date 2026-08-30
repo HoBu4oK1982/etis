@@ -1,0 +1,110 @@
+/* ============================================================
+   ШРИФТЫ ПРОЕКТА
+   ------------------------------------------------------------
+   Gilroy  — весь обычный текст.
+   Magistral — заголовки (h1…h6) и ВСЕ цифры на сайте.
+
+   Цифры подменяются не классами, а через unicode-range: семейство
+   "Magistral Numerals" объявлено только на диапазон U+0030–0039 и стоит
+   ПЕРВЫМ в --font-sans. Браузер берёт из него цифры, всё остальное
+   отдаёт Gilroy — цены, счётчики, телефоны и номера в тексте
+   становятся магистралом автоматически, без правок компонентов.
+
+   ФАЙЛЫ КЛАДЁМ ПРЯМО В public/fonts/ (без вложенных папок),
+   имена — как в исходной поставке:
+     GilroyRegular.ttf
+     GilroyMedium.ttf
+     GilroySemibold.ttf
+     GilroyBold.ttf
+     GilroyBlack.ttf
+     MagistralMedium.ttf
+     MagistralBold.ttf
+
+   Формат .ttf работает как есть. Если позже прогонишь через
+   woff2-конвертер — добавь строку url("/fonts/…woff2") format("woff2")
+   ПЕРЕД ttf, вес страницы упадёт примерно вчетверо.
+   ============================================================ */
+
+/* ---------- Gilroy ---------- */
+
+@font-face {
+  font-family: "Gilroy";
+  src: url("/fonts/GilroyRegular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Gilroy";
+  src: url("/fonts/GilroyMedium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Gilroy";
+  src: url("/fonts/GilroySemibold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Gilroy";
+  src: url("/fonts/GilroyBold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* В вёрстке часто стоит font-weight: 800 — отдаём его Black,
+   иначе браузер синтезировал бы жир из Bold и буквы «плыли» бы */
+@font-face {
+  font-family: "Gilroy";
+  src: url("/fonts/GilroyBlack.ttf") format("truetype");
+  font-weight: 800 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- Magistral (заголовки) ---------- */
+
+@font-face {
+  font-family: "Magistral";
+  src: url("/fonts/MagistralMedium.ttf") format("truetype");
+  font-weight: 400 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Magistral";
+  src: url("/fonts/MagistralBold.ttf") format("truetype");
+  font-weight: 600 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- Magistral только для цифр ----------
+   unicode-range режет семейство до диапазона 0–9, поэтому его можно
+   безопасно ставить первым в стек: на буквы оно не претендует. */
+
+@font-face {
+  font-family: "Magistral Numerals";
+  src: url("/fonts/MagistralMedium.ttf") format("truetype");
+  font-weight: 400 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0030-0039;
+}
+
+@font-face {
+  font-family: "Magistral Numerals";
+  src: url("/fonts/MagistralBold.ttf") format("truetype");
+  font-weight: 600 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0030-0039;
+}

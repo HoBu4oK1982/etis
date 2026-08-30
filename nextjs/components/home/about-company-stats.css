@@ -1,0 +1,17 @@
+.about-company-stats {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.about-company-stats b {
+  min-width: 4.2ch;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-company-stats {
+    transform: none !important;
+    will-change: auto;
+  }
+}
