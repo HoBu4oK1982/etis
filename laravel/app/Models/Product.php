@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
 
 class Product extends Model
@@ -93,5 +94,37 @@ class Product extends Model
     public function files()
     {
         return $this->hasMany(ProductFile::class)->orderBy('position');
+    }
+
+    /**
+     * Уникальный slug из заголовка: "kotel-baxi", при занятом — "kotel-baxi-2", "-3", ...
+     *
+     * $ignoreId — id редактируемого товара, чтобы его собственный slug
+     * не считался занятым (иначе при каждом сохранении рос бы суффикс).
+     */
+    public static function makeUniqueSlug(string $title, ?int $ignoreId = null): string
+    {
+        $base = Str::slug($title, '-');
+        if ($base === '') {
+            $base = 'product';
+        }
+
+        $slug = $base;
+        $i = 2;
+
+        while (static::slugExists($slug, $ignoreId)) {
+            $slug = $base . '-' . $i;
+            $i++;
+        }
+
+        return $slug;
+    }
+
+    protected static function slugExists(string $slug, ?int $ignoreId = null): bool
+    {
+        return static::query()
+            ->where('slug', $slug)
+            ->when($ignoreId, fn ($q) => $q->where('id', '!=', $ignoreId))
+            ->exists();
     }
 }
