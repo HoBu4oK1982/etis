@@ -2,14 +2,15 @@
 
 namespace App\Console\Commands;
 
-use Anthropic\Client;
-use Anthropic\Core\Exceptions\APIStatusException;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Services\NextRevalidator;
 use App\Support\CategoryTree;
 use Illuminate\Console\Command;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Http;
 
 /**
  * Генерация SEO-мета и текста для категорий через Claude API.
@@ -42,11 +43,26 @@ class SeoCategoriesCommand extends Command
     /** Модель Claude. Sonnet 4.6 — баланс качества и цены для объёмной генерации. */
     private const MODEL = 'claude-sonnet-4-6';
 
+    private const API_URL = 'https://api.anthropic.com/v1/messages';
+    private const API_VERSION = '2023-06-01';
+
     private const MAX_TITLE = 60;
     private const MAX_DESCRIPTION = 160;
 
     /** Сколько раз повторить запрос при rate limit / перегрузке. */
     private const MAX_ATTEMPTS = 4;
+
+    /** Таймаут одного запроса: с adaptive thinking ответ может идти долго. */
+    private const TIMEOUT = 180;
+
+    private string $apiKey = '';
+
+    /**
+     * Просить ли у API строгий JSON через output_config.format.
+     * Снимается автоматически, если API это поле не принял — тогда
+     * полагаемся на инструкцию в системном промпте.
+     */
+    private bool $useStructuredOutput = true;
 
     private int $generated = 0;
     private int $skipped = 0;
@@ -57,9 +73,9 @@ class SeoCategoriesCommand extends Command
 
     public function handle(): int
     {
-        $apiKey = (string) config('services.anthropic.key');
+        $this->apiKey = (string) config('services.anthropic.key');
 
-        if ($apiKey === '') {
+        if ($this->apiKey === '') {
             $this->error('Не задан ANTHROPIC_API_KEY в .env — генерировать нечем.');
 
             return self::FAILURE;
@@ -84,8 +100,6 @@ class SeoCategoriesCommand extends Command
         ));
         $this->newLine();
 
-        $client = new Client(apiKey: $apiKey);
-
         foreach ($categories as $i => $category) {
             $context = $this->buildContext($category);
 
@@ -99,7 +113,7 @@ class SeoCategoriesCommand extends Command
             ));
 
             try {
-                $seo = $this->generate($client, $context);
+                $seo = $this->generate($context);
             } catch (\Throwable $e) {
                 $this->failed++;
                 $this->error('    ошибка: ' . $e->getMessage());
@@ -250,29 +264,31 @@ class SeoCategoriesCommand extends Command
     }
 
     /**
-     * Запрос к Claude со structured output — гарантирует четыре поля на выходе.
+     * Генерация полей для одной категории.
      *
      * @param  array<string, mixed>  $context
      * @return array{meta_title: string, meta_description: string, meta_keywords: string, description: string}
      */
-    private function generate(Client $client, array $context): array
+    private function generate(array $context): array
     {
-        $seo = $this->requestSeo($client, $this->userPrompt($context));
+        $seo = $this->requestSeo($this->userPrompt($context));
 
         // Один корректирующий заход, если модель промахнулась по длине.
         $tooLong = $this->lengthProblems($seo);
 
         if ($tooLong !== []) {
-            $seo = $this->requestSeo($client, $this->repairPrompt($context, $seo, $tooLong));
+            $seo = $this->requestSeo($this->repairPrompt($context, $seo, $tooLong));
         }
 
         return $seo;
     }
 
     /**
+     * Один вызов Anthropic Messages API через Laravel HTTP Client.
+     *
      * @return array{meta_title: string, meta_description: string, meta_keywords: string, description: string}
      */
-    private function requestSeo(Client $client, string $prompt): array
+    private function requestSeo(string $prompt): array
     {
         $attempt = 0;
 
@@ -280,61 +296,159 @@ class SeoCategoriesCommand extends Command
             $attempt++;
 
             try {
-                $message = $client->messages->create(
-                    model: self::MODEL,
-                    maxTokens: 8000,
-                    thinking: ['type' => 'adaptive'],
-                    system: [
-                        [
-                            'type' => 'text',
-                            'text' => $this->systemPrompt(),
-                            // Системный промпт одинаков для всех 143 запросов —
-                            // кэшируем, чтобы не платить за него каждый раз.
-                            'cacheControl' => ['type' => 'ephemeral'],
-                        ],
-                    ],
-                    messages: [
-                        ['role' => 'user', 'content' => $prompt],
-                    ],
-                    outputConfig: ['format' => $this->schema()],
-                );
-            } catch (APIStatusException $e) {
-                $type = $e->type?->value;
-                $retryable = in_array($type, ['rate_limit_error', 'overloaded_error', 'api_error'], true);
-
-                if ($retryable && $attempt < self::MAX_ATTEMPTS) {
-                    $wait = 2 ** $attempt;
-                    $this->warn("    {$type}, повтор через {$wait}с (попытка {$attempt})");
-                    sleep($wait);
-
-                    continue;
+                $response = Http::withHeaders([
+                    'x-api-key'         => $this->apiKey,
+                    'anthropic-version' => self::API_VERSION,
+                    'content-type'      => 'application/json',
+                ])
+                    ->timeout(self::TIMEOUT)
+                    ->post(self::API_URL, $this->payload($prompt));
+            } catch (ConnectionException $e) {
+                // Обрыв связи или таймаут — на прогоне в 143 запроса дело обычное.
+                if ($attempt >= self::MAX_ATTEMPTS) {
+                    throw $e;
                 }
 
-                throw $e;
+                $wait = 2 ** $attempt;
+                $this->warn("    сеть недоступна, повтор через {$wait}с (попытка {$attempt})");
+                sleep($wait);
+
+                continue;
             }
 
-            if ($message->stopReason === 'refusal') {
-                throw new \RuntimeException(
-                    'модель отказалась отвечать: ' . ($message->stopDetails?->explanation ?? 'без пояснения')
-                );
+            if ($response->successful()) {
+                return $this->decode($response->json());
             }
 
-            return $this->decode($message);
+            // Схему API не принял — снимаем её и пробуем ещё раз: в системном
+            // промпте требование «только JSON» есть и без output_config.
+            if ($this->shouldDropStructuredOutput($response)) {
+                $this->useStructuredOutput = false;
+                $this->warn('    API не принял output_config — переключаюсь на JSON по инструкции промпта');
+
+                continue;
+            }
+
+            if ($this->isRetryable($response) && $attempt < self::MAX_ATTEMPTS) {
+                $wait = $this->retryAfter($response, $attempt);
+                $this->warn(sprintf(
+                    '    HTTP %d (%s), повтор через %dс (попытка %d)',
+                    $response->status(),
+                    $this->errorType($response) ?: 'без типа',
+                    $wait,
+                    $attempt
+                ));
+                sleep($wait);
+
+                continue;
+            }
+
+            throw new \RuntimeException(sprintf(
+                'HTTP %d: %s',
+                $response->status(),
+                $this->errorMessage($response)
+            ));
         }
+    }
+
+    /**
+     * Тело запроса к /v1/messages.
+     *
+     * @return array<string, mixed>
+     */
+    private function payload(string $prompt): array
+    {
+        $payload = [
+            'model'      => self::MODEL,
+            'max_tokens' => 8000,
+            'thinking'   => ['type' => 'adaptive'],
+            'system'     => [
+                [
+                    'type' => 'text',
+                    'text' => $this->systemPrompt(),
+                    // Системный промпт одинаков для всех 143 запросов —
+                    // кэшируем, чтобы не платить за него каждый раз.
+                    'cache_control' => ['type' => 'ephemeral'],
+                ],
+            ],
+            'messages' => [
+                ['role' => 'user', 'content' => $prompt],
+            ],
+        ];
+
+        if ($this->useStructuredOutput) {
+            $payload['output_config'] = ['format' => $this->schema()];
+        }
+
+        return $payload;
+    }
+
+    /** Повторяем при rate limit, перегрузке и серверных ошибках. */
+    private function isRetryable(Response $response): bool
+    {
+        return in_array($response->status(), [408, 409, 429, 500, 502, 503, 504, 529], true);
+    }
+
+    /** Уважаем retry-after, если API его прислал, иначе экспоненциальная пауза. */
+    private function retryAfter(Response $response, int $attempt): int
+    {
+        $header = (int) $response->header('retry-after');
+
+        return $header > 0 ? min($header, 60) : 2 ** $attempt;
+    }
+
+    /**
+     * 400 с упоминанием output_config — признак того, что поле не поддержано.
+     * Снимаем его один раз за прогон, дальше идём без строгой схемы.
+     */
+    private function shouldDropStructuredOutput(Response $response): bool
+    {
+        if (! $this->useStructuredOutput || $response->status() !== 400) {
+            return false;
+        }
+
+        $message = mb_strtolower($this->errorMessage($response));
+
+        return str_contains($message, 'output_config') || str_contains($message, 'format');
+    }
+
+    private function errorType(Response $response): string
+    {
+        return (string) ($response->json('error.type') ?? '');
+    }
+
+    private function errorMessage(Response $response): string
+    {
+        $message = $response->json('error.message');
+
+        return is_string($message) && $message !== ''
+            ? $message
+            : mb_substr($response->body(), 0, 300);
     }
 
     /**
      * Достаём JSON из первого текстового блока ответа.
      *
+     * @param  array<string, mixed>|null  $body
      * @return array{meta_title: string, meta_description: string, meta_keywords: string, description: string}
      */
-    private function decode(object $message): array
+    private function decode(?array $body): array
     {
+        if (! is_array($body)) {
+            throw new \RuntimeException('пустой ответ API');
+        }
+
+        if (($body['stop_reason'] ?? null) === 'refusal') {
+            throw new \RuntimeException(
+                'модель отказалась отвечать: ' . ($body['stop_details']['explanation'] ?? 'без пояснения')
+            );
+        }
+
         $json = null;
 
-        foreach ($message->content as $block) {
-            if ($block->type === 'text') {
-                $json = $block->text;
+        foreach ($body['content'] ?? [] as $block) {
+            if (($block['type'] ?? null) === 'text') {
+                $json = (string) ($block['text'] ?? '');
                 break;
             }
         }
@@ -343,7 +457,11 @@ class SeoCategoriesCommand extends Command
             throw new \RuntimeException('в ответе нет текстового блока');
         }
 
-        $data = json_decode($json, true);
+        if (($body['stop_reason'] ?? null) === 'max_tokens') {
+            throw new \RuntimeException('ответ обрезан по max_tokens — текст неполный');
+        }
+
+        $data = json_decode($this->stripFence($json), true);
 
         if (! is_array($data)) {
             throw new \RuntimeException('ответ не разобрался как JSON: ' . mb_substr($json, 0, 200));
@@ -361,6 +479,23 @@ class SeoCategoriesCommand extends Command
             'meta_keywords'    => trim((string) $data['meta_keywords']),
             'description'      => trim((string) $data['description']),
         ];
+    }
+
+    /**
+     * Снимает обёртку ```json ... ``` — без строгой схемы модель иногда
+     * заворачивает JSON в markdown-блок.
+     */
+    private function stripFence(string $text): string
+    {
+        $text = trim($text);
+
+        if (! str_starts_with($text, '```')) {
+            return $text;
+        }
+
+        $text = preg_replace('/^```[a-z]*\s*/i', '', $text);
+
+        return trim(preg_replace('/```\s*$/', '', (string) $text));
     }
 
     /** JSON-схема ответа: ровно четыре поля, ничего лишнего. */
@@ -445,6 +580,12 @@ class SeoCategoriesCommand extends Command
         Если у категории есть бренды — упоминай их. Если есть подкатегории —
         отрази их в тексте. Если товаров нет, пиши про направление в целом,
         не утверждая наличие конкретных позиций на складе.
+
+        ФОРМАТ ОТВЕТА
+
+        Возвращай ТОЛЬКО JSON-объект с ключами meta_title, meta_description,
+        meta_keywords, description. Без markdown-обёрток, без пояснений до и
+        после, без комментариев внутри JSON.
         PROMPT;
     }
 

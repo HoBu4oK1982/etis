@@ -7,7 +7,6 @@
     "require": {
         "php": "^8.1",
         "anhskohbo/no-captcha": "^3.7",
-        "anthropic-ai/sdk": "^0.45",
         "guzzlehttp/guzzle": "^7.9",
         "hardevine/shoppingcart": "^3.3",
         "jenssegers/agent": "^2.6",
