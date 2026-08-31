@@ -1159,6 +1159,38 @@ html[data-theme="dark"] .etis-cat-empty h3 { color: #e2e8f0; }
   line-height: 1.7;
 }
 
+/* Свёрнутое состояние — обрезка по высоте, а не по строке: HTML целиком
+   остаётся в DOM, иначе краулер увидел бы усечённый текст.
+   ~11em ≈ 300 знаков при текущем кегле и межстрочном.               */
+.etis-cat-seo__body.is-collapsed {
+  max-height: 11em;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 60%, transparent 100%);
+}
+
+.etis-cat-seo__body > :first-child { margin-top: 0; }
+.etis-cat-seo__body > :last-child { margin-bottom: 0; }
+
+.etis-cat-seo__toggle {
+  margin-top: 14px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-brand-600, #2563eb);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.etis-cat-seo__toggle:hover { text-decoration: underline; }
+
+.etis-cat-seo__toggle:focus-visible {
+  outline: 2px solid var(--color-brand-600, #2563eb);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
 /* ---------- Аккордеон подкатегорий ----------
    Уровни различаются не отступом, а типографикой и направляющими:
    у вложенных списков появляется вертикальная линия с «усиками» к
@@ -1626,6 +1658,15 @@ html[data-theme="dark"] .etis-cat-seo :where(h1, h2, h3, h4, h5, h6, strong, b) 
 
 html[data-theme="dark"] .etis-cat-seo a {
   color: #76b8ff !important;
+}
+
+html[data-theme="dark"] .etis-cat-seo__toggle {
+  color: #76b8ff !important;
+}
+
+html[data-theme="dark"] .etis-cat-seo__body.is-collapsed {
+  -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 60%, transparent 100%);
 }
 
 /* ============================================================

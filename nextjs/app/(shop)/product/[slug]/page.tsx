@@ -10,6 +10,9 @@ import { ProductFeatures } from "@/components/product/ProductFeatures";
 import { SimilarProducts } from "@/components/product/SimilarProducts";
 import "@/components/product/product-detail.css";
 import type { Metadata } from "next";
+import { ProductSchema } from "@/components/seo/SchemaOrg";
+import { ogDescription } from "@/lib/seo/site";
+import type { Crumb } from "@/components/seo/JsonLd";
 
 // ISR: 10 минут (см. REVALIDATE.product)
 export const revalidate = 600;
@@ -68,11 +71,23 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   try {
     const res = await getProduct(slug);
     const p = res.data;
+    const title = p.meta?.title || p.title;
+    const description = p.meta?.description || p.short_description || undefined;
+    const image = p.images?.[0]?.url;
+
     return {
-      title: p.meta?.title || p.title,
-      description: p.meta?.description || p.short_description || undefined,
+      title,
+      description,
       keywords: p.meta?.keywords || undefined,
       alternates: { canonical: `/product/${p.slug}` },
+      openGraph: {
+        type: "website",
+        siteName: "ETIS.KZ",
+        title,
+        description: ogDescription(description),
+        url: `/product/${p.slug}`,
+        images: image ? [{ url: image, alt: p.title }] : undefined,
+      },
     };
   } catch {
     return { title: "Товар" };
@@ -117,8 +132,19 @@ export default async function ProductPage({ params }: PageProps) {
     { label: product.title },
   ];
 
+  const schemaCrumbs: Crumb[] = crumbs.map((crumb) => ({
+    name: crumb.label,
+    url: crumb.href,
+  }));
+
   return (
     <div className="container-narrow py-6 md:py-10">
+      <ProductSchema
+        product={product}
+        url={`/product/${product.slug}`}
+        crumbs={schemaCrumbs}
+      />
+
       <Breadcrumbs items={crumbs} />
 
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_460px] gap-5">

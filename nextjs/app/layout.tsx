@@ -12,6 +12,7 @@ import YandexMetrika from "@/components/analytics/YandexMetrika";
 import { CallbackWidget } from "@/components/callback/CallbackWidget";
 import { CopyProtection } from '@/components/ui/CopyProtection';
 import { ImageWatermark } from '@/components/ui/ImageWatermark';
+import { OrganizationSchema } from "@/components/seo/SchemaOrg";
 
 export const metadata: Metadata = {
   title: {
@@ -60,6 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body>
+      <OrganizationSchema />
       <CopyProtection />
       <ImageWatermark />
         <Preloader />

@@ -5,6 +5,7 @@ import { PopularEquipmentSection } from "@/components/home/PopularEquipmentSecti
 import { OfficialPartnersSection } from "@/components/home/OfficialPartnersSection";
 import { ArticleGrid } from "@/components/home/ArticleGrid";
 import type { HomeData } from "@/lib/types/home";
+import { WebSiteSchema } from "@/components/seo/SchemaOrg";
 
 // ISR: раз в 5 минут перепроверяем данные
 export const revalidate = 300;
@@ -22,6 +23,8 @@ export default async function HomePage() {
 
   return (
     <>
+      <WebSiteSchema />
+
       <HeroSlider slides={data.slides} categories={data.root_categories} />
 
       <PopularEquipmentSection products={data.hits} />

@@ -5,9 +5,12 @@ import type { ProductListItem } from "@/lib/types/product";
 import type { BrandsResponse } from "@/lib/types/brand";
 import type { Article } from "@/lib/types/misc";
 
-export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL || "https://etis.kz"
-).replace(/\/+$/, "");
+// SITE_URL живёт в lib/seo/site.ts. Импортируем для локального
+// использования и реэкспортируем, чтобы не ломать существующие
+// импорты (robots.ts и др.).
+import { SITE_URL } from "./site";
+
+export { SITE_URL };
 
 export type SiteMapEntry = {
   url: string;

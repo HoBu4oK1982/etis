@@ -12,6 +12,9 @@ import { MobileFiltersDrawer } from "@/components/catalog/MobileFiltersDrawer";
 import { EMPTY_SHOP_RESPONSE } from "@/lib/api/shop";
 import type { CategoryProductsResponse } from "@/lib/api/categories";
 import { normalizeRichTextHtml } from "@/lib/utils/image";
+import { CategorySeoText } from "@/components/catalog/CategorySeoText";
+import { CategorySchema } from "@/components/seo/SchemaOrg";
+import type { Crumb } from "@/components/seo/JsonLd";
 
 type Props = {
   slug: string;
@@ -71,6 +74,22 @@ export async function CategoryPageView({ slug, path, searchParams }: Props) {
     })),
   ];
 
+  // Текст без тегов — нужен и для порога сворачивания, и для description
+  // в CollectionPage, куда HTML класть нельзя.
+  const plainDescription = normalizedDescription
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const canonicalPath = pathString
+    ? `/category/${slug}/${pathString}`
+    : `/category/${slug}`;
+
+  const schemaCrumbs: Crumb[] = crumbs.map((crumb) => ({
+    name: crumb.label,
+    url: crumb.href,
+  }));
+
   const filtersPanel = (
     <CategoryFiltersPanel
       tree={tree}
@@ -84,6 +103,18 @@ export async function CategoryPageView({ slug, path, searchParams }: Props) {
 
   return (
     <div className="container-narrow py-6 md:py-10">
+      <CategorySchema
+        name={current.meta?.title || current.title}
+        description={
+          current.meta?.description ||
+          current.short_description ||
+          plainDescription.slice(0, 300) ||
+          null
+        }
+        url={canonicalPath}
+        crumbs={schemaCrumbs}
+      />
+
       <Breadcrumbs items={crumbs} />
 
       <header className="etis-cat-head">
@@ -123,10 +154,9 @@ export async function CategoryPageView({ slug, path, searchParams }: Props) {
 
       {/* Описание раздела — под товарами, как принято в SEO-каталогах */}
       {normalizedDescription && (
-        <section
-          className="etis-cat-seo prose-simple category-description"
-          data-rich-text
-          dangerouslySetInnerHTML={{ __html: normalizedDescription }}
+        <CategorySeoText
+          html={normalizedDescription}
+          plainLength={plainDescription.length}
         />
       )}
     </div>

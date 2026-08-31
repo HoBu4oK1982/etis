@@ -25,12 +25,23 @@ export async function generateMetadata({
     const data = await getCategory(slug, pathString || undefined);
     const c = data.current;
 
+    const title = c.meta?.title || c.title;
+    const description = c.meta?.description || c.short_description || undefined;
+
     return {
-      title: c.meta?.title || c.title,
-      description: c.meta?.description || c.short_description || undefined,
+      title,
+      description,
       keywords: c.meta?.keywords || undefined,
       alternates: { canonical: `/category/${slug}/${pathString}` },
       robots: filtered ? { index: false, follow: true } : undefined,
+      openGraph: {
+        type: "website",
+        siteName: "ETIS.KZ",
+        title,
+        description,
+        url: `/category/${slug}/${pathString}`,
+        images: c.image ? [{ url: c.image, alt: c.title }] : undefined,
+      },
     };
   } catch {
     return { title: "Категория" };
