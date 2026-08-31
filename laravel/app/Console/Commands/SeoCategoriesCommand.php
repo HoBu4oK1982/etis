@@ -52,17 +52,13 @@ class SeoCategoriesCommand extends Command
     /** Сколько раз повторить запрос при rate limit / перегрузке. */
     private const MAX_ATTEMPTS = 4;
 
-    /** Таймаут одного запроса: с adaptive thinking ответ может идти долго. */
+    /** Потолок ответа: SEO-текст на 300–500 слов плюс три коротких поля. */
+    private const MAX_TOKENS = 8000;
+
+    /** Таймаут одного запроса, секунд. */
     private const TIMEOUT = 180;
 
     private string $apiKey = '';
-
-    /**
-     * Просить ли у API строгий JSON через output_config.format.
-     * Снимается автоматически, если API это поле не принял — тогда
-     * полагаемся на инструкцию в системном промпте.
-     */
-    private bool $useStructuredOutput = true;
 
     private int $generated = 0;
     private int $skipped = 0;
@@ -320,15 +316,6 @@ class SeoCategoriesCommand extends Command
                 return $this->decode($response->json());
             }
 
-            // Схему API не принял — снимаем её и пробуем ещё раз: в системном
-            // промпте требование «только JSON» есть и без output_config.
-            if ($this->shouldDropStructuredOutput($response)) {
-                $this->useStructuredOutput = false;
-                $this->warn('    API не принял output_config — переключаюсь на JSON по инструкции промпта');
-
-                continue;
-            }
-
             if ($this->isRetryable($response) && $attempt < self::MAX_ATTEMPTS) {
                 $wait = $this->retryAfter($response, $attempt);
                 $this->warn(sprintf(
@@ -358,10 +345,9 @@ class SeoCategoriesCommand extends Command
      */
     private function payload(string $prompt): array
     {
-        $payload = [
+        return [
             'model'      => self::MODEL,
-            'max_tokens' => 8000,
-            'thinking'   => ['type' => 'adaptive'],
+            'max_tokens' => self::MAX_TOKENS,
             'system'     => [
                 [
                     'type' => 'text',
@@ -375,12 +361,6 @@ class SeoCategoriesCommand extends Command
                 ['role' => 'user', 'content' => $prompt],
             ],
         ];
-
-        if ($this->useStructuredOutput) {
-            $payload['output_config'] = ['format' => $this->schema()];
-        }
-
-        return $payload;
     }
 
     /** Повторяем при rate limit, перегрузке и серверных ошибках. */
@@ -395,21 +375,6 @@ class SeoCategoriesCommand extends Command
         $header = (int) $response->header('retry-after');
 
         return $header > 0 ? min($header, 60) : 2 ** $attempt;
-    }
-
-    /**
-     * 400 с упоминанием output_config — признак того, что поле не поддержано.
-     * Снимаем его один раз за прогон, дальше идём без строгой схемы.
-     */
-    private function shouldDropStructuredOutput(Response $response): bool
-    {
-        if (! $this->useStructuredOutput || $response->status() !== 400) {
-            return false;
-        }
-
-        $message = mb_strtolower($this->errorMessage($response));
-
-        return str_contains($message, 'output_config') || str_contains($message, 'format');
     }
 
     private function errorType(Response $response): string
@@ -445,16 +410,25 @@ class SeoCategoriesCommand extends Command
         }
 
         $json = null;
+        $types = [];
 
         foreach ($body['content'] ?? [] as $block) {
-            if (($block['type'] ?? null) === 'text') {
+            $types[] = (string) ($block['type'] ?? '?');
+
+            if ($json === null && ($block['type'] ?? null) === 'text') {
                 $json = (string) ($block['text'] ?? '');
-                break;
             }
         }
 
         if ($json === null) {
-            throw new \RuntimeException('в ответе нет текстового блока');
+            // Частый случай: max_tokens израсходован на thinking, и текстового
+            // блока в ответе просто нет. Показываем, что реально пришло,
+            // иначе причина не видна.
+            throw new \RuntimeException(sprintf(
+                'в ответе нет текстового блока (stop_reason=%s, блоки: %s)',
+                $body['stop_reason'] ?? 'null',
+                $types === [] ? 'ни одного' : implode(', ', $types)
+            ));
         }
 
         if (($body['stop_reason'] ?? null) === 'max_tokens') {
@@ -496,37 +470,6 @@ class SeoCategoriesCommand extends Command
         $text = preg_replace('/^```[a-z]*\s*/i', '', $text);
 
         return trim(preg_replace('/```\s*$/', '', (string) $text));
-    }
-
-    /** JSON-схема ответа: ровно четыре поля, ничего лишнего. */
-    private function schema(): array
-    {
-        return [
-            'type'   => 'json_schema',
-            'schema' => [
-                'type'       => 'object',
-                'properties' => [
-                    'meta_title' => [
-                        'type'        => 'string',
-                        'description' => 'Title страницы, СТРОГО не длиннее ' . self::MAX_TITLE . ' символов',
-                    ],
-                    'meta_description' => [
-                        'type'        => 'string',
-                        'description' => 'Description, СТРОГО не длиннее ' . self::MAX_DESCRIPTION . ' символов',
-                    ],
-                    'meta_keywords' => [
-                        'type'        => 'string',
-                        'description' => 'От 5 до 8 ключевых слов через запятую',
-                    ],
-                    'description' => [
-                        'type'        => 'string',
-                        'description' => 'SEO-текст 300–500 слов в простом HTML (p, h2, h3, ul, li, strong)',
-                    ],
-                ],
-                'required'             => ['meta_title', 'meta_description', 'meta_keywords', 'description'],
-                'additionalProperties' => false,
-            ],
-        ];
     }
 
     private function systemPrompt(): string
@@ -583,9 +526,14 @@ class SeoCategoriesCommand extends Command
 
         ФОРМАТ ОТВЕТА
 
-        Возвращай ТОЛЬКО JSON-объект с ключами meta_title, meta_description,
-        meta_keywords, description. Без markdown-обёрток, без пояснений до и
-        после, без комментариев внутри JSON.
+        Ответ — ТОЛЬКО JSON-объект, ровно в таком виде:
+
+        {"meta_title": "...", "meta_description": "...", "meta_keywords": "...", "description": "<p>...</p>"}
+
+        Первый символ ответа — {, последний — }. Никаких markdown-обёрток
+        ```json, никаких пояснений до или после, никаких комментариев внутри.
+        Все четыре ключа обязательны и непусты. HTML в поле description
+        экранируй по правилам JSON, переносы строк внутри значений не ставь.
         PROMPT;
     }
 
