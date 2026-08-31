@@ -69,8 +69,8 @@ const FALLBACK_HOME_DATA: HomeData = {
   ],
   root_categories: [
     { id: -1, title: "Отопление", subtitle: null, short_description: null, slug: "otoplenie", description: "Котлы, горелки, радиаторы, теплообменники и др.", image: null, parent_id: null, position: 1, meta: emptyMeta },
-    { id: -2, title: "Холодоснабжение", subtitle: null, short_description: null, slug: "holodosnabzhenie", description: "Чиллеры, фанкойлы, компрессоры и др.", image: null, parent_id: null, position: 2, meta: emptyMeta },
-    { id: -3, title: "Водоснабжение", subtitle: null, short_description: null, slug: "vodosnabzhenie", description: "Насосы, трубы, запорная арматура и др.", image: null, parent_id: null, position: 3, meta: emptyMeta },
+    { id: -2, title: "Холодоснабжение", subtitle: null, short_description: null, slug: "xolodosnabzenie", description: "Чиллеры, фанкойлы, компрессоры и др.", image: null, parent_id: null, position: 2, meta: emptyMeta },
+    { id: -3, title: "Водоснабжение", subtitle: null, short_description: null, slug: "vodosnabzenie", description: "Насосы, трубы, запорная арматура и др.", image: null, parent_id: null, position: 3, meta: emptyMeta },
     { id: -4, title: "Услуги", subtitle: null, short_description: null, slug: "uslugi", description: "Монтаж, сервис, пусконаладка и обслуживание", image: null, parent_id: null, position: 4, meta: emptyMeta },
     { id: -5, title: "Проектирование", subtitle: null, short_description: null, slug: "proektirovanie", description: "Проектирование инженерных систем любой сложности", image: null, parent_id: null, position: 5, meta: emptyMeta },
     { id: -6, title: "Комплектующие", subtitle: null, short_description: null, slug: "komplektuyushchie", description: "Фитинги, клапаны, датчики, автоматика и др.", image: null, parent_id: null, position: 6, meta: emptyMeta },
